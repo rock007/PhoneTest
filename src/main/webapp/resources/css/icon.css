@@ -1,0 +1,89 @@
+@CHARSET "UTF-8";
+@CHARSET "UTF-8";
+
+.settings {
+    background-image:url(../images/icons/fam/folder_wrench.png);
+}
+.nav {
+    background-image:url(../images/icons/fam/folder_go.png);
+}
+.info {
+    background-image:url(../images/icons/fam/information.png);
+}
+.report {
+    background-image:url(../images/icons/fam/application_go.png);
+}
+.add{
+	background-image:url(../images/icons/fam/add.png);
+}
+
+.del{
+	background-image:url(../images/icons/fam/delete.gif);
+}
+
+.file_path{
+	background-image:url(../images/icons/fam/file_path.png);
+}
+
+.up{
+	background-image:url(../images/icons/fam/up.png);
+}
+.down{
+	background-image:url(../images/icons/fam/down.png);
+}
+.save{
+	background-image:url(../images/icons/fam/disk.png);
+}
+.import{
+	background-image:url(../images/icons/fam/import-export.png);
+}
+
+.user{
+	background-image:url(../images/icons/fam/user_suit.png);
+}
+.refresh{
+	background-image:url(../images/icons/fam/Refresh.png);
+}
+.upload{
+	background-image:url(../images/icons/fam/Upload.png);
+}
+
+.zoom_in{
+	background-image:url(../images/icons/fam/zoom_in.png);
+}
+.zoom_out{
+	background-image:url(../images/icons/fam/zoom_out.png);
+}
+
+.next{
+	background-image:url(../images/icons/fam/next.png);
+}
+.previous{
+	background-image:url(../images/icons/fam/previous.png);
+}
+
+
+.pdf{
+	background-image:url(../images/icons/fam/pdf.png);
+}
+
+.word{
+	background-image:url(../images/icons/fam/word.png);
+}
+
+.excel{
+	background-image:url(../images/icons/fam/excel.png);
+}
+.csv{
+	background-image:url(../images/icons/fam/csv.gif);
+}
+.txt{
+	background-image:url(../images/icons/fam/page_white_text.png);
+}
+
+.search{
+	background-image:url(../images/icons/fam/search.gif);
+}
+.clear{
+	background-image:url(../images/icons/fam/rss_go.png);
+}

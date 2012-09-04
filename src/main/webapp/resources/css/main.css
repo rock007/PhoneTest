@@ -1,0 +1,57 @@
+@CHARSET "UTF-8";
+
+.logo {
+    color: #000000;   
+    float: left;
+    font-family: verdana,sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    height: 60px;
+    padding: 10 0 0 10;
+}
+
+#north{
+	margin:0 0px;
+	background-color: #DFE8F6;
+}
+
+.cleaner {
+	display: block;
+	clear: both;
+	visibility: hidden;
+	overflow: hidden;
+	width: 100%;
+	height: 0;
+	line-height: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.sidebar-list {
+    background: none repeat scroll 0 0 #EAEAEA;
+}
+.sidebar-list .x-item-selected {
+    background-color: #7B8B9D;
+    background-image: -moz-linear-gradient(center top , #8493A4, #6F8194);
+    border-color: #7B8B9D;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-shadow: 0 1px 0 #4C5866;
+}
+
+.product {
+    border-color: #EAEAEA;
+    border-style: solid;
+    border-width: 1px 0;
+    font-size: 12px;
+    padding: 3px 10px;
+}
+
+.sidebar-title {
+    color: #666666;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 5px;
+    text-shadow: 0 1px 0 white;
+    text-transform: uppercase;
+}

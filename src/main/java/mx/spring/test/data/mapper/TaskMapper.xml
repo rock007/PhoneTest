@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mx.spring.test.data.mapper.TaskMapper">
+	
+	<sql id="page_sql">  limit #{start} ,#{limit}    </sql>
+	
+    <select id="getTasks" resultType="TaskEntity">
+    	SELECT id, task_code, task_type, params, createUser, createDt, status, locationCode, 
+    			testTimes, testUser, callType, callTel, callTime, timeout 
+		FROM b_task    
+    </select>
+	
+	<insert id="addTask" parameterType="TaskEntity">
+			
+		INSERT INTO b_task
+			(task_code, task_type, params, createUser, createDt, status, locationCode, testTimes, testUser, callType, callTel, callTime, timeout) 
+		VALUES 
+			(#{task_code}, #{task_type}, #{params}, #{createUser}, #{createDt}, #{status}, #{locationCode}, #{testTimes}, #{testUser}, #{callType}, #{callTel}, #{callTime}, #{timeout})
+			
+	</insert>
+	
+</mapper>

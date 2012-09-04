@@ -1,0 +1,9 @@
+{"images": [
+        {
+        	"id":"testCast_tab",
+            "name": "任务管理",
+            "tooltip": "任务管理",            
+            "url": "PT.view.task.ManagerPanel",
+            "thumb_url": "resources/images/view/List.png"
+        }
+        ]}

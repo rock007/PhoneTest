@@ -1,0 +1,9 @@
+{"images": [
+        {
+        	"id":"testView_tab",
+            "name": "查看测试结果",
+            "tooltip": "查看测试结果记录",            
+            "url": "PT.view.report.ResultPanel",
+            "thumb_url": "resources/images/view/report_7.png"
+        }
+        ]}
