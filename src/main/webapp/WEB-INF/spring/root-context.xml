@@ -2,11 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+		
+	<!-- Root Context: defines shared resources visible to all other web components -->	
 	
-	<!-- Root Context: defines shared resources visible to all other web components -->
-		<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://122.70.146.176:3306/pt?autoReconnect=true&amp;characterEncoding=UTF-8&amp;useUnicode=true" />
+		<property name="url" value="jdbc:mysql://223.4.214.65:3306/pt?autoReconnect=true&amp;characterEncoding=UTF-8&amp;useUnicode=true" />
 		<property name="username" value="bayard" />
 		<property name="password" value="1231#$!sFE2!" />
 	</bean>
@@ -55,9 +56,11 @@
 	<!-- ftp文件扫描  -->
 	<bean id="ftpScanRunner" class="mx.spring.service.provider.FtpScanRunner"  init-method="start">			
 			<property name="scanInterval" value="3"/>
-			<property name="enable" value="1"></property>
+			<property name="enable" value="0"></property>
 			<property name="job" ref="ftpScanJob"/>
 	</bean> 
+	
+	
 </beans>
 
 
