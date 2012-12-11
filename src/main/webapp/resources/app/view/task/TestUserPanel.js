@@ -11,9 +11,8 @@ Ext.define('PT.view.task.TestUserPanel', {
 	var gridstore=	Ext.create('Ext.data.Store', {    	
     			fields:[
     			        'task_code', 'task_type', 'params', {name:'testTimes',type:'int'}, 'testUser', {name:'createDt',type:'date'},{name: 'status',type:'int'}    			        
-    			 ,'locationCode',  'callType', 'callTel', 'callTime', 'timeout'
-    			],    	
-    			
+    			        ,'locationCode',  'callType', 'callTel', 'callTime', 'timeout'
+    			],    	    			
     			proxy: {
         			type: 'ajax',
         			url : 'getTasks',
@@ -34,8 +33,8 @@ Ext.define('PT.view.task.TestUserPanel', {
 					selModel: Ext.create('Ext.selection.CheckboxModel',{mode:'SIMPLE'}),
     				store: gridstore,
     				columns: [
-        				{ header: '手机号码',  dataIndex: 'task_code' , flex: 1},
-        				{ header: '员工编码', dataIndex: 'task_type' ,renderer:function(v){
+        				{ header: '手机号码',  dataIndex: 'phoneNo' , flex: 1},
+        				{ header: '员工编码', dataIndex: 'ucode' ,renderer:function(v){
         					        					
         					//var record= Ext.create('MobileTest.store.TestTaskType').findRecord('value',v);
 		        			//if(record!=null){
@@ -43,7 +42,7 @@ Ext.define('PT.view.task.TestUserPanel', {
 		        			//}
 		        			return v;
         				}},
-        				{ header: '姓名', dataIndex: 'locationCode', flex: 1 },
+        				{ header: '姓名', dataIndex: 'name', flex: 1 },
         				{
 							xtype : 'actioncolumn',				
 							flex : 1,
@@ -53,13 +52,12 @@ Ext.define('PT.view.task.TestUserPanel', {
 								handler : function(grid, rowIndex, colIndex) {
 									var rec = grid.getStore().getAt(rowIndex);
 									
-									/**
-									Ext.create('PT.view.window.EditTaskWindow',{
+									Ext.create('PT.view.window.EditTestUserWindow',{
 										rec:rec,
 										listeners:{'beforedestroy':function(){										
 											gridstore.load({params:{taskType:0}});					
 									}}}).show();
-									**/
+									
 								}}
 								
 		 					]
@@ -74,7 +72,7 @@ Ext.define('PT.view.task.TestUserPanel', {
 						iconCls : 'add',
 						handler : function() {
 
-							Ext.create('PT.view.window.EditTaskWindow',{								
+							Ext.create('PT.view.window.EditTestUserWindow',{								
 								listeners:{'beforedestroy':function(){										
 									gridstore.load({params:{taskType:0}});													
 								}}

@@ -2,13 +2,13 @@
  * 
  **/
   
- Ext.define('PT.view.window.EditUserWindow',{
+ Ext.define('PT.view.window.EditTestUserWindow',{
  	extend:'Ext.window.Window', 	
  	width:600,
  	height:400,
  	modal:true,
  	rec:null,
- 	title:'用户信息编辑', 	
+ 	title:'巡检人员编辑', 	
 	initComponent : function() {
 		
 		var me = this;
@@ -23,32 +23,25 @@
     		defaultType: 'textfield',
 			items:[
 					{
-        				fieldLabel: '用户名',
-        				name: 'userName',
+        				fieldLabel: '手机号码',
+        				name: 'phoneNo',
         				anchor:'50%',
         				allowBlank: false
     				},{
-        				fieldLabel: '密码',
-        				name: 'passWord',
+        				fieldLabel: '姓名',
+        				name: 'name',
         				allowBlank: false,
         				maxLength :15,				
-						blankText : '密码不能为空',
-						inputType : 'password',
         				anchor:'50%'
     				},{
-        				fieldLabel: '角色',
-        				name: 'role',
+        				fieldLabel: '员工编码',
+        				name: 'ucode',
         				allowBlank: false,
         	        	xtype:'combobox',
     					store: Ext.create('PT.store.RoleType'),
     					queryMode: 'local',
     					displayField: 'name',
     					valueField: 'value',
-        				anchor:'50%'
-    				},{
-        				fieldLabel: '备注',
-        				xtype:'textareafield',
-        				name: 'remarks',
         				anchor:'50%'
     				}]			
 		});

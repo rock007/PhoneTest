@@ -122,7 +122,7 @@
 					items : [ {
 							text : '保存',
 							tooltip : '保存添加测试任务',
-							iconCls : 'add',
+							iconCls : 'ok',
 							handler : function() {
 								
 								var form = me.down('form').getForm();
@@ -144,7 +144,7 @@
 						}, {
 							text : '关闭',
 							tooltip : '关闭窗口',
-							iconCls : 'add',
+							iconCls : 'cross',
 							handler : function() {
 									me.close();
 							}

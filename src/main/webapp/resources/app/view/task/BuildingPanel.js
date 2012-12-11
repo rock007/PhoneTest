@@ -9,11 +9,9 @@ Ext.define('PT.view.task.BuildingPanel', {
 			var me = this;
 		
 	var gridstore=	Ext.create('Ext.data.Store', {    	
-    			fields:[
-    			        'task_code', 'task_type', 'params', {name:'testTimes',type:'int'}, 'testUser', {name:'createDt',type:'date'},{name: 'status',type:'int'}    			        
-    			 ,'locationCode',  'callType', 'callTel', 'callTime', 'timeout'
-    			],    	
-    			
+    			fields:[    			 
+    			 {name:'bid',type:'int'}, 'bcode', 'bname', 'blocation',{name: 'btype',type:'int'},{name: 'frequency',type:'int'}, 'acode', 'remarks', 'longitude', 'latitude'    			 
+    			],    	    			
     			proxy: {
         			type: 'ajax',
         			url : 'getTasks',
@@ -34,8 +32,8 @@ Ext.define('PT.view.task.BuildingPanel', {
 					selModel: Ext.create('Ext.selection.CheckboxModel',{mode:'SIMPLE'}),
     				store: gridstore,
     				columns: [
-        				{ header: '楼宇代码',  dataIndex: 'task_code' , flex: 1},
-        				{ header: '楼宇名称', dataIndex: 'task_type' ,renderer:function(v){
+        				{ header: '楼宇代码',  dataIndex: 'bcode' , flex: 1},
+        				{ header: '楼宇名称', dataIndex: 'bname' ,renderer:function(v){
         					        					
         					//var record= Ext.create('MobileTest.store.TestTaskType').findRecord('value',v);
 		        			//if(record!=null){
@@ -43,10 +41,10 @@ Ext.define('PT.view.task.BuildingPanel', {
 		        			//}
 		        			return v;
         				}},
-        				{ header: '地址', dataIndex: 'locationCode', flex: 1 },
-        				{ header: '类型', dataIndex: 'callType', flex: 1 },
-        				{ header: '巡检频率', dataIndex: 'callTel', flex: 1 },
-        				{ header: '行政区', dataIndex: 'callTime', flex: 1 },
+        				{ header: '地址', dataIndex: 'blocation', flex: 1 },
+        				{ header: '类型', dataIndex: 'btype', flex: 1 },
+        				{ header: '巡检频率', dataIndex: 'frequency', flex: 1 },
+        				{ header: '行政区', dataIndex: 'acode', flex: 1 },
         				{ header: '点位数量(个)', dataIndex: 'callTime', flex: 1 },
         				{
 							xtype : 'actioncolumn',				
@@ -56,14 +54,13 @@ Ext.define('PT.view.task.BuildingPanel', {
 								tooltip : '查看',
 								handler : function(grid, rowIndex, colIndex) {
 									var rec = grid.getStore().getAt(rowIndex);
-									
-									/**
-									Ext.create('PT.view.window.EditTaskWindow',{
+																		
+									Ext.create('PT.view.window.EditBuildingWindow',{
 										rec:rec,
 										listeners:{'beforedestroy':function(){										
 											gridstore.load({params:{taskType:0}});					
 									}}}).show();
-									**/
+									
 								}}								
 		 					]
 						}
