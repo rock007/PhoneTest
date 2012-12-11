@@ -55,7 +55,7 @@
 	
 	<insert id="addResult"  parameterType="ResultEntity">
 			INSERT INTO b_result
-				(fileName, `index`, beginDateTime, endDateTime, testResult, pointIndex, lac, rxlvl, cqt, callResult, createDt) 
+				(fileName, `index`, beginDateTime, endDateTime, testResult, pointIndex, `lac`, `rxlvl`, `cqt`, `callResult`, createDt) 
 			VALUES 
 				(#{fileName}, #{index}, #{beginDateTime}, #{endDateTime}, #{testResult}, #{pointIndex}, #{lac}, #{rxlvl}, #{cqt}, #{callResult}, #{createDt})
 			

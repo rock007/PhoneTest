@@ -7,36 +7,17 @@
 	<sql id="page_sql">  limit #{start} ,#{limit}    </sql>
 	
     <select id="getTasks" resultType="TaskEntity">
-    	SELECT
-			`task_id`,
-			`task_type`,
-			`params`,
-			`testTimes`,
-			`createUser`,
-			`createDt`,
-			`status`
-		FROM `b_task`		    
+    	SELECT id, task_code, task_type, params, createUser, createDt, status, locationCode, 
+    			testTimes, testUser, callType, callTel, callTime, timeout 
+		FROM b_task    
     </select>
 	
 	<insert id="addTask" parameterType="TaskEntity">
-			INSERT INTO `b_task`
-				(`task_id`,
-				`task_type`,
-				`params`,
-				`testTimes`,
-				`createUser`,
-				`createDt`,
-				`status`)
-			VALUES
-			(
-				#{task_id},
-				#{task_type},
-				#{params},
-				#{testTimes},
-				#{createUser},
-				#{createDt},
-				#{status}
-			)
+			
+		INSERT INTO b_task
+			(task_code, task_type, params, createUser, createDt, status, locationCode, testTimes, testUser, callType, callTel, callTime, timeout) 
+		VALUES 
+			(#{task_code}, #{task_type}, #{params}, #{createUser}, #{createDt}, #{status}, #{locationCode}, #{testTimes}, #{testUser}, #{callType}, #{callTel}, #{callTime}, #{timeout})
 			
 	</insert>
 	
