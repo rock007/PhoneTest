@@ -1,5 +1,4 @@
 @CHARSET "UTF-8";
-@CHARSET "UTF-8";
 
 .settings {
     background-image:url(../images/icons/fam/folder_wrench.png);
@@ -86,4 +85,11 @@
 }
 .clear{
 	background-image:url(../images/icons/fam/rss_go.png);
+}
+
+.ok{
+	background-image:url(../images/icons/fam/ok.png);
+}
+.cross{
+	background-image:url(../images/icons/fam/cross.gif);
 }

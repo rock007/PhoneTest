@@ -77,7 +77,7 @@ Ext.define('PT.view.task.BuildingPanel', {
 						iconCls : 'add',
 						handler : function() {
 
-							Ext.create('PT.view.window.EditTaskWindow',{								
+							Ext.create('PT.view.window.EditBuildingWindow',{								
 								listeners:{'beforedestroy':function(){										
 									gridstore.load({params:{taskType:0}});													
 								}}
