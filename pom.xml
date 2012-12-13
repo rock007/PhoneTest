@@ -276,8 +276,12 @@
 						<include>controller/NavController.js</include>
 						<include>model/ImageModel.js</include>
 						
+						<include>store/FrequencyType.js</include>
+						<include>store/RegionType.js</include>
 						<include>store/RoleType.js</include>
 						<include>store/TaskType.js</include>
+						
+						
 						<include>view/MainContent.js</include>
 						<include>view/NavView.js</include>
 						<include>view/Viewport.js</include>
@@ -286,14 +290,14 @@
 						<include>view/task/ManagerPanel.js</include>
 						<include>view/task/BuildingPanel.js</include>
 						<include>view/task/TestUserPanel.js</include>
-						
-						
-						<include>view/window/EditTaskWindow.js</include>
-						
+												
 						<include>view/window/EditBuildingWindow.js</include>
+						<include>view/window/EditPostionWindow.js</include>
+						<include>view/window/EditTaskWindow.js</include>
 						<include>view/window/EditTestUserWindow.js</include>
 						
 						<include>view/window/EditUserWindow.js</include>
+						<include>view/window/ViewBuildingWindow.js</include>
 					</includes>
 				</aggregation>
 			</aggregations>

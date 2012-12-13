@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import mx.spring.test.data.entity.BuildingEntity;
+import mx.spring.test.data.entity.MobileEntity;
 import mx.spring.test.data.entity.PostionEntity;
 import mx.spring.test.data.entity.TaskEntity;
 import mx.spring.test.data.privider.TaskProvider;
@@ -61,13 +62,29 @@ public class TaskController {
 		}
 	 
 	 @RequestMapping(value="/getBuildings" ,method=RequestMethod.GET)
-		public @ResponseBody JsonData<BuildingEntity> getBuildingListBy(@ModelAttribute TaskEntity entity){
+		public @ResponseBody JsonData<BuildingEntity> getBuildingListBy(@ModelAttribute BuildingEntity entity){
 			
-			BuildingEntity m =new BuildingEntity();
-			List<BuildingEntity>  list= taskProvider.getBuildingList(m );
+			List<BuildingEntity>  list= taskProvider.getBuildingList(entity);
 			
 			return new JsonData<BuildingEntity>(list.size(),list);
 		}
+	 
+	 
+	 	@RequestMapping(value = "/updateBuilding", method = RequestMethod.POST)
+		public @ResponseBody JsonMsg   updateBuilding( @ModelAttribute BuildingEntity m){
+		 
+			JsonMsg msg=new JsonMsg();
+			
+			if(m.getBid()>0){		
+				taskProvider.updateBuilding(m);
+				msg= new JsonMsg(true, "更新楼宇信息成功！");
+			}else{
+				taskProvider.addBuilding(m);
+
+				 msg= new JsonMsg(true, "添加楼宇信息成功！");
+			}
+			return  msg;
+	 }
 	 
 	 
 	@RequestMapping(value = "/getPostionBy", method = RequestMethod.GET)
@@ -103,5 +120,41 @@ public class TaskController {
 		taskProvider.delPostion(bid);
 
 		return new JsonMsg(true, "删除点位信息成功！");
+	}
+		
+	
+	@RequestMapping(value = "/getMobileList", method = RequestMethod.GET)
+	public @ResponseBody
+	JsonData<MobileEntity> getMobileList(@ModelAttribute MobileEntity entity) {
+
+		List<MobileEntity> list = taskProvider.getMobileList(entity);
+
+		return new JsonData<MobileEntity>(list.size(), list);
+	}
+
+	@RequestMapping(value = "/updateMobile", method = RequestMethod.POST)
+	public @ResponseBody
+	JsonMsg updateMobile(@ModelAttribute MobileEntity m) {
+
+		JsonMsg msg = new JsonMsg();
+		List<MobileEntity> list=taskProvider.getMobileList(m);
+		
+		if (list!= null&&list.size()>0) {
+			taskProvider.updateMobile(m);
+			msg = new JsonMsg(true, "更新巡检人员信息成功！");
+		} else {
+			taskProvider.addMobile(m);
+
+			msg = new JsonMsg(true, "添加巡检人员信息成功！");
+		}
+		return msg;
+	}
+
+	@RequestMapping(value = "/delMobile", method = RequestMethod.GET)
+	public @ResponseBody
+	JsonMsg delMobile(@RequestParam String mobileId) {
+		taskProvider.delMobile(mobileId);
+
+		return new JsonMsg(true, "删除巡检人员信息成功！");
 	}
 }

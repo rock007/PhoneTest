@@ -24,24 +24,21 @@
 			items:[
 					{
         				fieldLabel: '手机号码',
-        				name: 'phoneNo',
+        				name: 'mobileId',
         				anchor:'50%',
         				allowBlank: false
     				},{
         				fieldLabel: '姓名',
-        				name: 'name',
+        				name: 'ename',
         				allowBlank: false,
         				maxLength :15,				
         				anchor:'50%'
     				},{
         				fieldLabel: '员工编码',
-        				name: 'ucode',
+        				name: 'ecode',
         				allowBlank: false,
-        	        	xtype:'combobox',
-    					store: Ext.create('PT.store.RoleType'),
-    					queryMode: 'local',
-    					displayField: 'name',
-    					valueField: 'value',
+        				allowBlank: false,
+        				maxLength :15,
         				anchor:'50%'
     				}]			
 		});
@@ -61,7 +58,7 @@
 								var form = me.down('form').getForm();
             					if (form.isValid()) {
                 					form.submit({
-                						url: 'submitUser',    							
+                						url: 'updateMobile',    							
                     					success: function(form, action) {
                        						Ext.Msg.alert('Success', action.result.msg);
                        						

@@ -65,4 +65,29 @@
 	   delete from  position where bid=#{value}
 	</delete>
 	
+	
+	<select id="getMobileList"  parameterType="MobileEntity" resultType="MobileEntity">
+		select  mobileId,ecode,ename,status  
+		from mobilephone		
+		<where>		
+			<if test="mobileId != null and mobileId !='' ">
+				AND mobileId = #{mobileId}
+			</if>
+		</where>	
+	</select>
+	<insert id="addMobile"  parameterType="MobileEntity" >
+		insert into mobilephone
+			( mobileId,ecode,ename,status )
+		values
+			( #{mobileId},#{ecode},#{ename},#{status} )
+	</insert>
+	<update id="updateMobile"  parameterType="MobileEntity" >
+	`	update mobilephone
+			set ecode=#{ecode},ename=#{ename},status=#{status}
+		where mobileId=#{mobileId}
+	</update>
+	<delete id="delMobile"  parameterType="string">
+			delete  mobilephone  where mobileId=#{mobileId}
+	</delete>
+	
 </mapper>

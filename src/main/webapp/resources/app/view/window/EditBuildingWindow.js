@@ -43,7 +43,7 @@
         				name: 'acode',
         				allowBlank: false,
         				xtype:'combobox',
-    					store: Ext.create('PT.store.TaskType'),
+    					store: Ext.create('PT.store.RegionType'),
     					queryMode: 'local',
     					displayField: 'name',
     					valueField: 'value',        						
@@ -90,7 +90,7 @@
         				name: 'frequency',        		   
         				allowBlank: false,
         				xtype:'combobox',
-    					store: Ext.create('PT.store.TaskType'),
+    					store: Ext.create('PT.store.FrequencyType'),
     					queryMode: 'local',
     					displayField: 'name',
     					valueField: 'value',  
@@ -115,7 +115,8 @@
         				anchor:'90%'
     				},{
     			        xtype: 'hiddenfield',
-    			        name: 'bid'
+    			        name: 'bid',
+    			        value:0
     			    }]			
 		});
 		
@@ -130,14 +131,14 @@
 					dock : 'top',
 					items : [ {
 							text : '保存',
-							tooltip : '保存添加测试任务',
+							tooltip : '保存楼宇信息',
 							iconCls : 'ok',
 							handler : function() {
 								
 								var form = me.down('form').getForm();
             					if (form.isValid()) {
                 					form.submit({
-                						url: 'submitTask',    							
+                						url: 'updateBuilding',    							
                     					success: function(form, action) {
                        						Ext.Msg.alert('Success', action.result.msg);
                        						

@@ -3,6 +3,7 @@ package mx.spring.test.data.privider;
 import java.util.List;
 
 import mx.spring.test.data.entity.BuildingEntity;
+import mx.spring.test.data.entity.MobileEntity;
 import mx.spring.test.data.entity.PostionEntity;
 import mx.spring.test.data.entity.TaskEntity;
 import mx.spring.test.data.mapper.TaskMapper;
@@ -55,6 +56,20 @@ public class TaskProvider {
 	
 	public void delPostion(int bid){
 		mapper.delPostion(bid);
+	}
+	
+	
+	public List<MobileEntity> getMobileList(MobileEntity m){
+		return mapper.getMobileList(m);
+	}
+	public void addMobile(MobileEntity m){
+		mapper.addMobile(m);
+	}
+	public void updateMobile(MobileEntity m){
+		mapper.updateMobile(m);
+	}
+	public void delMobile(String phoneNo){
+		mapper.delMobile(phoneNo);
 	}
 	
 	

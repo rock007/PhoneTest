@@ -3,6 +3,7 @@ package mx.spring.test.data.mapper;
 import java.util.List;
 
 import mx.spring.test.data.entity.BuildingEntity;
+import mx.spring.test.data.entity.MobileEntity;
 import mx.spring.test.data.entity.PostionEntity;
 import mx.spring.test.data.entity.TaskEntity;
 
@@ -22,4 +23,11 @@ public interface TaskMapper {
 	public void addPostion(PostionEntity m);	
 	public void updatePostion(PostionEntity m);	
 	public void delPostion(int bid);
+	
+	
+	public List<MobileEntity> getMobileList(MobileEntity m);
+	public void addMobile(MobileEntity m);
+	public void updateMobile(MobileEntity m);
+	public void delMobile(String phoneNo);
+	
 }
