@@ -16,7 +16,7 @@
 		
 		var  from =Ext.create('Ext.form.Panel',{
 			region:'center',
-			bodyPadding: 5,
+			bodyPadding: 5,			
 			layout: 'anchor',
 			fieldDefaults: {
             	labelAlign: 'right'            				
@@ -119,8 +119,11 @@
     			    }]			
 		});
 		
-		Ext.applyIf(me, {
-			layout:'border',  
+				
+		Ext.applyIf(me, {			 
+			layout: {
+			    type: 'border'
+			},
 			items:[	from],
 			 dockedItems:[ {
 					xtype : 'toolbar',

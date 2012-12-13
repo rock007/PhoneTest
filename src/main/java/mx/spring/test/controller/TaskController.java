@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import mx.spring.test.data.entity.BuildingEntity;
+import mx.spring.test.data.entity.PostionEntity;
 import mx.spring.test.data.entity.TaskEntity;
 import mx.spring.test.data.privider.TaskProvider;
 import mx.spring.test.model.JsonData;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -56,4 +59,49 @@ public class TaskController {
 			
 			return new JsonData<TaskEntity>(list.size(),list);
 		}
+	 
+	 @RequestMapping(value="/getBuildings" ,method=RequestMethod.GET)
+		public @ResponseBody JsonData<BuildingEntity> getBuildingListBy(@ModelAttribute TaskEntity entity){
+			
+			BuildingEntity m =new BuildingEntity();
+			List<BuildingEntity>  list= taskProvider.getBuildingList(m );
+			
+			return new JsonData<BuildingEntity>(list.size(),list);
+		}
+	 
+	 
+	@RequestMapping(value = "/getPostionBy", method = RequestMethod.GET)
+	public @ResponseBody
+	JsonData<PostionEntity> getPostionBy(@RequestParam  int bid) {
+
+		List<PostionEntity> list = taskProvider.getPostionBy(bid);
+
+		return new JsonData<PostionEntity>(list.size(), list);
+
+	}
+
+	@RequestMapping(value = "/updatePostion", method = RequestMethod.POST)
+	public @ResponseBody
+	JsonMsg updatePostion(@ModelAttribute  PostionEntity m) {
+		
+		JsonMsg msg=new JsonMsg();
+		
+		if(m.getPid()>0){		
+			taskProvider.updatePostion(m);
+			msg= new JsonMsg(true, "更新点位信息成功！");
+		}else{
+			taskProvider.addPostion(m);
+
+			 msg= new JsonMsg(true, "添加点位信息成功！");
+		}
+		return  msg;
+	}
+
+	@RequestMapping(value = "/delPostion", method = RequestMethod.GET)
+	public @ResponseBody
+	JsonMsg delPostion(@RequestParam int bid) {
+		taskProvider.delPostion(bid);
+
+		return new JsonMsg(true, "删除点位信息成功！");
+	}
 }

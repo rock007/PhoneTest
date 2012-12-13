@@ -284,7 +284,15 @@
 						<include>view/report/ResultPanel.js</include>
 						<include>view/sys/UsersPanel.js</include>
 						<include>view/task/ManagerPanel.js</include>
+						<include>view/task/BuildingPanel.js</include>
+						<include>view/task/TestUserPanel.js</include>
+						
+						
 						<include>view/window/EditTaskWindow.js</include>
+						
+						<include>view/window/EditBuildingWindow.js</include>
+						<include>view/window/EditTestUserWindow.js</include>
+						
 						<include>view/window/EditUserWindow.js</include>
 					</includes>
 				</aggregation>

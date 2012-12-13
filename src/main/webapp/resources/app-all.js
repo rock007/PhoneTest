@@ -1118,6 +1118,234 @@ Ext.define('PT.view.task.ManagerPanel', {
 			}
 					
 		});
+Ext.define('PT.view.task.BuildingPanel', {
+			extend:'Ext.panel.Panel',				
+			ids:null,
+			viewConfig : {
+				stripeRows : true
+			},			
+			initComponent : function() {
+				
+			var me = this;
+		
+	var gridstore=	Ext.create('Ext.data.Store', {    	
+    			fields:[    			 
+    			 {name:'bid',type:'int'}, 'bcode', 'bname', 'blocation',{name: 'btype',type:'int'},{name: 'frequency',type:'int'}, 'acode', 'remarks', 'longitude', 'latitude'    			 
+    			],    	    			
+    			proxy: {
+        			type: 'ajax',
+        			url : 'getTasks',
+        			reader: {
+            			type: 'json',
+            			root: 'rows'
+        			}        	
+    			}
+			});
+		
+		Ext.applyIf(me, {
+			layout:'border',  
+			items:[			
+				{
+					xtype:'gridpanel',
+					region:'center',
+					title: '楼宇管理',
+					selModel: Ext.create('Ext.selection.CheckboxModel',{mode:'SIMPLE'}),
+    				store: gridstore,
+    				columns: [
+        				{ header: '楼宇代码',  dataIndex: 'bcode' , flex: 1},
+        				{ header: '楼宇名称', dataIndex: 'bname' ,renderer:function(v){
+        					        					
+        					//var record= Ext.create('MobileTest.store.TestTaskType').findRecord('value',v);
+		        			//if(record!=null){
+		        			//	return record.data.name;
+		        			//}
+		        			return v;
+        				}},
+        				{ header: '地址', dataIndex: 'blocation', flex: 1 },
+        				{ header: '类型', dataIndex: 'btype', flex: 1 },
+        				{ header: '巡检频率', dataIndex: 'frequency', flex: 1 },
+        				{ header: '行政区', dataIndex: 'acode', flex: 1 },
+        				{ header: '点位数量(个)', dataIndex: 'callTime', flex: 1 },
+        				{
+							xtype : 'actioncolumn',				
+							flex : 1,
+							items : [ {
+								icon: 'resources/images/icons/fam/edit.gif',
+								tooltip : '查看',
+								handler : function(grid, rowIndex, colIndex) {
+									var rec = grid.getStore().getAt(rowIndex);
+																		
+									Ext.create('PT.view.window.EditBuildingWindow',{
+										rec:rec,
+										listeners:{'beforedestroy':function(){										
+											gridstore.load({params:{taskType:0}});					
+									}}}).show();
+									
+								}}								
+		 					]
+						}
+    				],
+    				dockedItems : [ {
+					xtype : 'toolbar',
+					dock : 'top',
+					items : [ {
+						text : '添加',
+						tooltip : '添加楼宇',
+						iconCls : 'add',
+						handler : function() {
+
+							Ext.create('PT.view.window.EditBuildingWindow',{								
+								listeners:{'beforedestroy':function(){										
+									gridstore.load({params:{taskType:0}});													
+								}}
+							}).show();
+							
+							}
+						},{
+							text : '删除',
+							tooltip : '删除楼宇',						
+							iconCls : 'del',
+							handler : function() {
+								
+							}
+						},'-',{
+						
+							xtype: 'textfield',
+					        name: 'search_key'
+						},{
+							text : '检索',
+							tooltip : '检索关键字',						
+							iconCls : 'search',
+							handler : function() {
+								
+							}
+							
+						} ]}
+				        ,{
+			        		xtype: 'pagingtoolbar',
+			        		store: gridstore,   
+			        		dock: 'bottom',
+			        		displayInfo: true
+			    		}
+				    ]
+				}
+			]
+		});
+				me.callParent(arguments);	
+				
+				gridstore.load({params:{taskType:0}});	
+				
+		
+			}
+					
+		});
+Ext.define('PT.view.task.TestUserPanel', {
+			extend:'Ext.panel.Panel',				
+			ids:null,
+			viewConfig : {
+				stripeRows : true
+			},			
+			initComponent : function() {
+				
+			var me = this;
+		
+	var gridstore=	Ext.create('Ext.data.Store', {    	
+    			fields:[
+    			        'task_code', 'task_type', 'params', {name:'testTimes',type:'int'}, 'testUser', {name:'createDt',type:'date'},{name: 'status',type:'int'}    			        
+    			        ,'locationCode',  'callType', 'callTel', 'callTime', 'timeout'
+    			],    	    			
+    			proxy: {
+        			type: 'ajax',
+        			url : 'getTasks',
+        			reader: {
+            			type: 'json',
+            			root: 'rows'
+        			}        	
+    			}
+			});
+		
+		Ext.applyIf(me, {
+			layout:'border',  
+			items:[			
+				{
+					xtype:'gridpanel',
+					region:'center',
+					title: '巡检人员管理',
+					selModel: Ext.create('Ext.selection.CheckboxModel',{mode:'SIMPLE'}),
+    				store: gridstore,
+    				columns: [
+        				{ header: '手机号码',  dataIndex: 'phoneNo' , flex: 1},
+        				{ header: '员工编码', dataIndex: 'ucode' ,renderer:function(v){
+        					        					
+        					//var record= Ext.create('MobileTest.store.TestTaskType').findRecord('value',v);
+		        			//if(record!=null){
+		        			//	return record.data.name;
+		        			//}
+		        			return v;
+        				}},
+        				{ header: '姓名', dataIndex: 'name', flex: 1 },
+        				{
+							xtype : 'actioncolumn',				
+							flex : 1,
+							items : [ {
+								icon: 'resources/images/icons/fam/edit.gif',
+								tooltip : '查看',
+								handler : function(grid, rowIndex, colIndex) {
+									var rec = grid.getStore().getAt(rowIndex);
+									
+									Ext.create('PT.view.window.EditTestUserWindow',{
+										rec:rec,
+										listeners:{'beforedestroy':function(){										
+											gridstore.load({params:{taskType:0}});					
+									}}}).show();
+									
+								}}
+								
+		 					]
+						}
+    				],
+    				dockedItems : [ {
+					xtype : 'toolbar',
+					dock : 'top',
+					items : [ {
+						text : '添加',
+						tooltip : '添加巡检人员',
+						iconCls : 'add',
+						handler : function() {
+
+							Ext.create('PT.view.window.EditTestUserWindow',{								
+								listeners:{'beforedestroy':function(){										
+									gridstore.load({params:{taskType:0}});													
+								}}
+							}).show();
+							
+							}
+						},{
+							text : '删除',
+							tooltip : '删除巡检人员',						
+							iconCls : 'del',
+							handler : function() {
+								
+							}
+						} ]}
+				        ,{
+			        		xtype: 'pagingtoolbar',
+			        		store: gridstore,   
+			        		dock: 'bottom',
+			        		displayInfo: true
+			    		}
+				    ]
+				}
+			]
+		});
+				me.callParent(arguments);	
+				
+				gridstore.load({params:{taskType:0}});	
+				
+		
+			}
+					
+		});
 
 /**
  * 
@@ -1242,7 +1470,7 @@ Ext.define('PT.view.task.ManagerPanel', {
 					items : [ {
 							text : '保存',
 							tooltip : '保存添加测试任务',
-							iconCls : 'add',
+							iconCls : 'ok',
 							handler : function() {
 								
 								var form = me.down('form').getForm();
@@ -1264,7 +1492,284 @@ Ext.define('PT.view.task.ManagerPanel', {
 						}, {
 							text : '关闭',
 							tooltip : '关闭窗口',
-							iconCls : 'add',
+							iconCls : 'cross',
+							handler : function() {
+									me.close();
+							}
+					}]
+				}]
+			});
+		
+		me.callParent(arguments);	
+		me.on('beforerender',me.on_beforerender);			
+			
+		},on_beforerender:function(me, eOpts){
+		
+			var rec=me.rec;
+				
+			if(rec!=null){
+			
+					var form=me.child('form').getForm();
+			
+					form.loadRecord(rec);
+			 }
+	  }		
+	});
+
+/**
+ * 
+ **/
+  
+ Ext.define('PT.view.window.EditBuildingWindow',{
+ 	extend:'Ext.window.Window', 	
+ 	width:600,
+ 	height:400,
+ 	modal:true,
+ 	rec:null,
+ 	title:'楼宇编辑', 	
+	initComponent : function() {
+		
+		var me = this;
+		
+		var  from =Ext.create('Ext.form.Panel',{
+			region:'center',
+			bodyPadding: 5,
+			layout: 'anchor',
+			fieldDefaults: {
+            	labelAlign: 'right'            				
+        	},
+        	defaults: {
+        		anchor: '95%'       					
+    		},
+    		defaultType: 'textfield',
+			items:[
+					{
+        				fieldLabel: '楼宇代码',
+        				name: 'bcode',
+        				anchor:'50%',
+        				allowBlank: false
+    				},{
+        				fieldLabel: '名称',
+        				name: 'bname',
+        				maxLength :20,
+        				allowBlank: false,   
+        				anchor:'90%'
+        				
+    				},{
+        				fieldLabel: '行政区',
+        				name: 'acode',
+        				allowBlank: false,
+        				xtype:'combobox',
+    					store: Ext.create('PT.store.TaskType'),
+    					queryMode: 'local',
+    					displayField: 'name',
+    					valueField: 'value',        						
+        				anchor:'50%' 	      
+        				
+    				},{
+    					fieldLabel : '地址',
+    					name: 'blocation',
+        				maxLength :50,
+        				allowBlank: false,        	      
+        				anchor:'90%'
+        		                    
+        		    },{
+        				fieldLabel: '楼宇类型',
+        				xtype      : 'fieldcontainer',
+	                    defaultType: 'radiofield',
+	                    defaults: {
+	                        flex: 1
+	                    },
+	                    layout: 'hbox',
+	                    anchor:'100%',
+	                    items: [
+	                        {
+	                            boxLabel  : '普通楼宇',
+	                            name      : 'btype',        		                            
+	                            inputValue: '0',
+	                            checked :   true,
+	                            id        : 'btype_radio1'        		                            
+	                        }, {
+	                            boxLabel  : 'VIP',
+	                            name      : 'btype',	                            
+	                            inputValue: '1',
+	                            id        : 'btype_radio2'
+	                        }, {
+	                            boxLabel  : 'WIP',
+	                            name      : 'btype',	                            
+	                            inputValue: '2',
+	                            id        : 'btype_radio3'
+	                        }
+	                    ]
+    				}
+    				,{
+        				fieldLabel: '巡检频率',
+        				name: 'frequency',        		   
+        				allowBlank: false,
+        				xtype:'combobox',
+    					store: Ext.create('PT.store.TaskType'),
+    					queryMode: 'local',
+    					displayField: 'name',
+    					valueField: 'value',  
+        				anchor:'50%'
+    				},{
+    					xtype:'textfield',
+        				fieldLabel: '经度',
+        				name: 'longitude',      	      
+        				anchor:'50%'
+    				}
+    				,{
+        				fieldLabel: '纬度',
+        				xtype:'textfield',
+        				name: 'latitude',        			
+        				anchor:'50%'
+    				},{
+        				fieldLabel: '备注',
+        				xtype:'textfield',
+        				name: 'remarks',
+        				maxLength :255,
+        				allowBlank: true,         			
+        				anchor:'90%'
+    				},{
+    			        xtype: 'hiddenfield',
+    			        name: 'bid'
+    			    }]			
+		});
+		
+		Ext.applyIf(me, {
+			layout:'border',  
+			items:[	from],
+			 dockedItems:[ {
+					xtype : 'toolbar',
+					dock : 'top',
+					items : [ {
+							text : '保存',
+							tooltip : '保存添加测试任务',
+							iconCls : 'ok',
+							handler : function() {
+								
+								var form = me.down('form').getForm();
+            					if (form.isValid()) {
+                					form.submit({
+                						url: 'submitTask',    							
+                    					success: function(form, action) {
+                       						Ext.Msg.alert('Success', action.result.msg);
+                       						
+                       						me.close();
+                    					},
+                    					failure: function(form, action) {
+                        					Ext.Msg.alert('Failed', action.result.msg);
+                    					}
+                					});
+            					}
+							
+							}
+						}, {
+							text : '关闭',
+							tooltip : '关闭窗口',
+							iconCls : 'cross',
+							handler : function() {
+									me.close();
+							}
+					}]
+				}]
+			});
+		
+		me.callParent(arguments);	
+		me.on('beforerender',me.on_beforerender);			
+			
+		},on_beforerender:function(me, eOpts){
+		
+			var rec=me.rec;
+				
+			if(rec!=null){
+			
+					var form=me.child('form').getForm();
+			
+					form.loadRecord(rec);
+			 }
+	  }		
+	});
+/**
+ * 
+ **/
+  
+ Ext.define('PT.view.window.EditTestUserWindow',{
+ 	extend:'Ext.window.Window', 	
+ 	width:600,
+ 	height:400,
+ 	modal:true,
+ 	rec:null,
+ 	title:'巡检人员编辑', 	
+	initComponent : function() {
+		
+		var me = this;
+		
+		var  from =Ext.create('Ext.form.Panel',{
+			region:'center',
+			bodyPadding: 5,
+			layout: 'anchor',
+			fieldDefaults: {
+            	labelAlign: 'right'            				
+        	},        	
+    		defaultType: 'textfield',
+			items:[
+					{
+        				fieldLabel: '手机号码',
+        				name: 'phoneNo',
+        				anchor:'50%',
+        				allowBlank: false
+    				},{
+        				fieldLabel: '姓名',
+        				name: 'name',
+        				allowBlank: false,
+        				maxLength :15,				
+        				anchor:'50%'
+    				},{
+        				fieldLabel: '员工编码',
+        				name: 'ucode',
+        				allowBlank: false,
+        	        	xtype:'combobox',
+    					store: Ext.create('PT.store.RoleType'),
+    					queryMode: 'local',
+    					displayField: 'name',
+    					valueField: 'value',
+        				anchor:'50%'
+    				}]			
+		});
+		
+		Ext.applyIf(me, {
+			layout:'border',  
+			items:[	from],
+			 dockedItems:[ {
+					xtype : 'toolbar',
+					dock : 'top',
+					items : [ {
+							text : '保存',
+							tooltip : '保存用户信息',
+							iconCls : 'ok',
+							handler : function() {
+								
+								var form = me.down('form').getForm();
+            					if (form.isValid()) {
+                					form.submit({
+                						url: 'submitUser',    							
+                    					success: function(form, action) {
+                       						Ext.Msg.alert('Success', action.result.msg);
+                       						
+                       						me.close();
+                    					},
+                    					failure: function(form, action) {
+                        					Ext.Msg.alert('Failed', action.result.msg);
+                    					}
+                					});
+            					}
+							
+							}
+						}, {
+							text : '关闭',
+							tooltip : '关闭窗口',
+							iconCls : 'cross',
 							handler : function() {
 									me.close();
 							}
@@ -1351,7 +1856,7 @@ Ext.define('PT.view.task.ManagerPanel', {
 					items : [ {
 							text : '保存',
 							tooltip : '保存用户信息',
-							iconCls : 'add',
+							iconCls : 'ok',
 							handler : function() {
 								
 								var form = me.down('form').getForm();
@@ -1373,7 +1878,7 @@ Ext.define('PT.view.task.ManagerPanel', {
 						}, {
 							text : '关闭',
 							tooltip : '关闭窗口',
-							iconCls : 'add',
+							iconCls : 'cross',
 							handler : function() {
 									me.close();
 							}

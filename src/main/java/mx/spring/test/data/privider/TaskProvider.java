@@ -2,6 +2,8 @@ package mx.spring.test.data.privider;
 
 import java.util.List;
 
+import mx.spring.test.data.entity.BuildingEntity;
+import mx.spring.test.data.entity.PostionEntity;
 import mx.spring.test.data.entity.TaskEntity;
 import mx.spring.test.data.mapper.TaskMapper;
 
@@ -22,4 +24,38 @@ public class TaskProvider {
 		
 		mapper.addTask(m);
 	}
+	
+	public List<BuildingEntity>  getBuildingList(BuildingEntity m){		
+		return mapper.getBuildingList(m);
+	}	
+	public void updateBuilding(BuildingEntity m){
+		mapper.updateBuilding(m);
+	}
+	public void delBuilding(BuildingEntity m){
+		mapper.delBuilding(m);
+	}
+	public void addBuilding(BuildingEntity m){
+		mapper.addBuilding(m);		
+	}
+	
+	
+	public List<PostionEntity> getPostionBy(int bid){
+		
+		return mapper.getPostionBy(bid);
+	}
+	
+	public void addPostion(PostionEntity m){
+		
+		mapper.addPostion(m);
+	}
+	
+	public void updatePostion(PostionEntity m){
+		mapper.updatePostion(m);
+	}
+	
+	public void delPostion(int bid){
+		mapper.delPostion(bid);
+	}
+	
+	
 }
