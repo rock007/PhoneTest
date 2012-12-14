@@ -33,19 +33,28 @@ Ext.define('PT.view.task.BuildingPanel', {
     				store: gridstore,
     				columns: [
         				{ header: '楼宇代码',  dataIndex: 'bcode' , flex: 1},
-        				{ header: '楼宇名称', dataIndex: 'bname' ,renderer:function(v){
+        				{ header: '楼宇名称', dataIndex: 'bname'},
+        				{ header: '地址', dataIndex: 'blocation', flex: 1 },
+        				{ header: '类型', dataIndex: 'btype', flex: 1  ,renderer:function(v){
+        					        		
+		        			if(v==0){
+		        				return "普通楼宇";
+		        			}else if(v==1){
+		        				return "VIP";
+		        			}else if(v==2){
+		        				return "WIP";
+		        			}
+		        			return v;
+        				}},        			
+        				{ header: '行政区', dataIndex: 'acode', flex: 1  ,renderer:function(v){
         					        					
-        					//var record= Ext.create('MobileTest.store.TestTaskType').findRecord('value',v);
-		        			//if(record!=null){
-		        			//	return record.data.name;
-		        			//}
+        					var record= Ext.create('PT.store.RegionType').findRecord('value',v);
+		        			if(record!=null){
+		        				return record.data.name;
+		        			}
 		        			return v;
         				}},
-        				{ header: '地址', dataIndex: 'blocation', flex: 1 },
-        				{ header: '类型', dataIndex: 'btype', flex: 1 },
-        				{ header: '巡检频率', dataIndex: 'frequency', flex: 1 },
-        				{ header: '行政区', dataIndex: 'acode', flex: 1 },
-        				{ header: '点位数量(个)', dataIndex: 'callTime', flex: 1 },
+        				//{ header: '点位数量(个)', dataIndex: 'callTime', flex: 1 },
         				{
 							xtype : 'actioncolumn',				
 							flex : 1,
@@ -61,7 +70,7 @@ Ext.define('PT.view.task.BuildingPanel', {
 											gridstore.load({params:{taskType:0}});					
 									}}}).show();
 									
-								}},
+								}}/****,
 								 {
 									icon: 'resources/images/icons/fam/image_add.png',
 									tooltip : '添加点位',
@@ -87,7 +96,7 @@ Ext.define('PT.view.task.BuildingPanel', {
 													//gridstore.load({params:{taskType:0}});					
 											}}}).show();
 											
-										}}
+										}}***/
 		 					]
 						}
     				],

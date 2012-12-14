@@ -86,7 +86,7 @@
 	                        }
 	                    ]
     				}
-    				,{
+    				,/***{
         				fieldLabel: '巡检频率',
         				name: 'frequency',        		   
         				allowBlank: false,
@@ -96,7 +96,7 @@
     					displayField: 'name',
     					valueField: 'value',  
         				anchor:'50%'
-    				},{
+    				},***/{
     					xtype:'textfield',
         				fieldLabel: '经度',
         				name: 'longitude',      	      
@@ -183,11 +183,12 @@
 								var rec = grid.getStore().getAt(rowIndex);
 								
 		
-							}}
+							}
+						}
  					]
 				}
 		    ],
-		    height: 200,
+		    height: 220,
 		    width: 590
 		});
 		

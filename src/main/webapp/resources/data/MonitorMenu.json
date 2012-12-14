@@ -18,5 +18,11 @@
             "tooltip": "巡检人员管理",            
             "url": "PT.view.task.TestUserPanel",
             "thumb_url": "resources/images/view/List.png"
+        }, {
+        	"id":"testPostion_tab",
+            "name": "点位管理",
+            "tooltip": "点位管理",            
+            "url": "PT.view.task.PostionPanel",
+            "thumb_url": "resources/images/view/List.png"
         }
         ]}
