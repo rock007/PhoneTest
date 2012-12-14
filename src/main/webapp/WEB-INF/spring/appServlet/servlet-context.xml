@@ -34,7 +34,7 @@
 	<!-- -->
 		<mvc:interceptors>	
 		<beans:bean id="accountInterceptor" class="mx.spring.test.interceptor.AccountInterceptor">
-			<beans:property name="passpg" value="login;home;.go;"></beans:property>	
+			<beans:property name="passpg" value="login;home;.do;"></beans:property>	
 		</beans:bean>
 	</mvc:interceptors>
 	 

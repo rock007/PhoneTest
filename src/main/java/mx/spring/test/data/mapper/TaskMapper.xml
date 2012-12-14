@@ -90,4 +90,21 @@
 			delete  mobilephone  where mobileId=#{mobileId}
 	</delete>
 	
+	
+	
+	<select id="getBuildingForTask" parameterType="string"  resultType="BuildingEntity">
+		select a.* 
+		from building a inner join tt_phone b
+			on a.bid=b.bid where b.phoneNo=#{value}
+	</select>
+	<select id="getPostionForTask"  resultType="PostionEntity" parameterType="MobileEntity">
+		select c.* 
+		from building a  inner join tt_phone b
+			on a.bid=b.bid inner join position c
+			on a.bid=c.bid
+		where b.phoneNo=#{mobileId} and  a.bid=#{status}
+	
+	</select>
+	
+	
 </mapper>

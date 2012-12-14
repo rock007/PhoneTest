@@ -157,4 +157,43 @@ public class TaskController {
 
 		return new JsonMsg(true, "删除巡检人员信息成功！");
 	}
+	
+	/**
+	 * 测试接口
+	 * *
+	 */
+	@RequestMapping(value = "/TaskQuery.do", method = RequestMethod.GET)
+	public @ResponseBody 	String taskQuery(@RequestParam("phone") String mobileId) {
+		
+
+		String msg="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+		
+		String building_format="<Building BCode=\"%s\" BName=\"%s\" isNew=\"1\" Remarks=\"%s\">%s</Building>";
+
+		String postion_format="<Position PCode=\"%s\" TestTask=\"%s\" />";
+		
+		List<BuildingEntity> blist= taskProvider.getBuildingForTask(mobileId);
+		
+		String m1="";
+		for(BuildingEntity en:blist){
+			
+			List<PostionEntity> plist=taskProvider.getPostionForTask(mobileId, en.getBid());
+			
+			String m2="";
+			for(PostionEntity p:plist){
+				
+				 m2+=String.format(postion_format, p.getPcode(),p.getTask());
+				
+			}
+			
+			m1+=String.format(building_format, en.getBcode(),en.getBname(),en.getRemarks(),m2);			
+			
+		}
+		
+		
+		return msg+m1;
+	}
+	
+	
+	
 }
