@@ -10,12 +10,11 @@ Ext.define('PT.view.task.TestUserPanel', {
 		
 	var gridstore=	Ext.create('Ext.data.Store', {    	
     			fields:[
-    			        'task_code', 'task_type', 'params', {name:'testTimes',type:'int'}, 'testUser', {name:'createDt',type:'date'},{name: 'status',type:'int'}    			        
-    			        ,'locationCode',  'callType', 'callTel', 'callTime', 'timeout'
+    			        {name:'mobileId',type:'int'}, 'ecode','ename',{name:'status',type:'int'}
     			],    	    			
     			proxy: {
         			type: 'ajax',
-        			url : 'getTasks',
+        			url : 'getMobileList',
         			reader: {
             			type: 'json',
             			root: 'rows'
@@ -33,8 +32,8 @@ Ext.define('PT.view.task.TestUserPanel', {
 					selModel: Ext.create('Ext.selection.CheckboxModel',{mode:'SIMPLE'}),
     				store: gridstore,
     				columns: [
-        				{ header: '手机号码',  dataIndex: 'phoneNo' , flex: 1},
-        				{ header: '员工编码', dataIndex: 'ucode' ,renderer:function(v){
+        				{ header: '手机号码',  dataIndex: 'mobileId' , flex: 1},
+        				{ header: '员工编码', dataIndex: 'ecode' ,renderer:function(v){
         					        					
         					//var record= Ext.create('MobileTest.store.TestTaskType').findRecord('value',v);
 		        			//if(record!=null){
@@ -42,7 +41,7 @@ Ext.define('PT.view.task.TestUserPanel', {
 		        			//}
 		        			return v;
         				}},
-        				{ header: '姓名', dataIndex: 'name', flex: 1 },
+        				{ header: '姓名', dataIndex: 'ename', flex: 1 },
         				{
 							xtype : 'actioncolumn',				
 							flex : 1,

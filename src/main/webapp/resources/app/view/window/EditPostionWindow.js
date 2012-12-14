@@ -2,13 +2,14 @@
  * 
  **/
   
- Ext.define('PT.view.window.EditTestUserWindow',{
+ Ext.define('PT.view.window.EditPostionWindow',{
  	extend:'Ext.window.Window', 	
  	width:600,
  	height:400,
  	modal:true,
  	rec:null,
- 	title:'巡检人员编辑', 	
+ 	bid:0,
+ 	title:'点位信息编辑', 	
 	initComponent : function() {
 		
 		var me = this;
@@ -23,24 +24,59 @@
     		defaultType: 'textfield',
 			items:[
 					{
-        				fieldLabel: '手机号码',
-        				name: 'mobileId',
+        				fieldLabel: '点位代码',
+        				name: 'pcode',
         				anchor:'50%',
         				allowBlank: false
     				},{
-        				fieldLabel: '姓名',
-        				name: 'ename',
+        				fieldLabel: '名称',
+        				name: 'pname',
         				allowBlank: false,
         				maxLength :15,				
         				anchor:'50%'
     				},{
-        				fieldLabel: '员工编码',
-        				name: 'ecode',
+    		            xtype: 'fieldcontainer',
+    		            fieldLabel: '任务',
+    		            defaultType: 'checkboxfield',
+    		            items: [
+    		                {
+    		                    boxLabel  : '定点场强测试',
+    		                    name      : 'task',
+    		                    inputValue: 'A',
+    		                    id        : 'task_checkbox1'
+    		                }, {
+    		                    boxLabel  : '业务拨测',
+    		                    name      : 'task',
+    		                    inputValue: 'B',
+    		                    checked   : true,
+    		                    id        : 'task_checkbox2'
+    		                }, {
+    		                    boxLabel  : '室内外切换测试',
+    		                    name      : 'task',
+    		                    inputValue: 'C',
+    		                    id        : 'task_checkbox3'
+    		                }, {
+    		                    boxLabel  : 'CQT测试',
+    		                    name      : 'task',
+    		                    inputValue: 'D',
+    		                    id        : 'task_checkbox4'
+    		                }
+    		            ]
+    		        },{
+        				fieldLabel: '备注',
+        				name: 'remarks',
         				allowBlank: false,
-        				allowBlank: false,
-        				maxLength :15,
+        				maxLength :100,				
         				anchor:'50%'
-    				}]			
+    				},{
+    			        xtype: 'hiddenfield',
+    			        name: 'bid',
+    			        value:me.bid
+    			    },{
+    			        xtype: 'hiddenfield',
+    			        name: 'pid',
+    			        value:0
+    			    }]			
 		});
 		
 		Ext.applyIf(me, {
@@ -51,14 +87,14 @@
 					dock : 'top',
 					items : [ {
 							text : '保存',
-							tooltip : '保存用户信息',
+							tooltip : '保存点位信息',
 							iconCls : 'ok',
 							handler : function() {
 								
 								var form = me.down('form').getForm();
             					if (form.isValid()) {
                 					form.submit({
-                						url: 'updateMobile',    							
+                						url: 'updatePostion',    							
                     					success: function(form, action) {
                        						Ext.Msg.alert('Success', action.result.msg);
                        						

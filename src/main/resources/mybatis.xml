@@ -17,6 +17,12 @@
 			
 		<typeAlias type="mx.spring.test.data.entity.ResultEntity" alias="ResultEntity" />		
 				
+		<typeAlias type="mx.spring.test.data.entity.BuildingEntity" alias="BuildingEntity" />				
+				
+		<typeAlias type="mx.spring.test.data.entity.PostionEntity" alias="PostionEntity" />
+		
+		<typeAlias type="mx.spring.test.data.entity.MobileEntity" alias="MobileEntity" />
+					
 	</typeAliases>
 	
 </configuration>

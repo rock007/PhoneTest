@@ -3,20 +3,21 @@
  * 
  **/
   
- Ext.define('PT.view.window.EditBuildingWindow',{
+ Ext.define('PT.view.window.ViewBuildingWindow',{
  	extend:'Ext.window.Window', 	
  	width:600,
- 	height:400,
+ 	height:500,
  	modal:true,
  	rec:null,
- 	title:'楼宇编辑', 	
+ 	title:'楼宇信息查看', 	
 	initComponent : function() {
 		
 		var me = this;
 		
 		var  from =Ext.create('Ext.form.Panel',{
 			region:'center',
-			bodyPadding: 5,			
+			bodyPadding: 5,
+			width:590,
 			layout: 'anchor',
 			fieldDefaults: {
             	labelAlign: 'right'            				
@@ -43,7 +44,7 @@
         				name: 'acode',
         				allowBlank: false,
         				xtype:'combobox',
-    					store: Ext.create('PT.store.RegionType'),
+    					store: Ext.create('PT.store.TaskType'),
     					queryMode: 'local',
     					displayField: 'name',
     					valueField: 'value',        						
@@ -90,7 +91,7 @@
         				name: 'frequency',        		   
         				allowBlank: false,
         				xtype:'combobox',
-    					store: Ext.create('PT.store.FrequencyType'),
+    					store: Ext.create('PT.store.TaskType'),
     					queryMode: 'local',
     					displayField: 'name',
     					valueField: 'value',  
@@ -115,43 +116,90 @@
         				anchor:'90%'
     				},{
     			        xtype: 'hiddenfield',
-    			        name: 'bid',
-    			        value:0
+    			        name: 'bid'
     			    }]			
 		});
 		
-				
+		Ext.create('Ext.data.Store', {
+		    storeId:'simpsonsStore',
+		    fields:['name', 'email', 'phone'],
+		    data:{'items':[
+		        { 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
+		        { 'name': 'Bart',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+		        { 'name': 'Homer', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+		        { 'name': 'Marge', "email":"marge@simpsons.com", "phone":"555-222-1254"  }
+		    ]},
+		    proxy: {
+		        type: 'memory',
+		        reader: {
+		            type: 'json',
+		            root: 'items'
+		        }
+		    }
+		});
+
+		var gridstore=	Ext.create('Ext.data.Store', {    	
+			fields:[    			 
+			 {name:'bid',type:'int'}, 'pcode', 'pname', 'task',{name: 'pid',type:'int'}, 'remarks'    			 
+			],    	    			
+			proxy: {
+    			type: 'ajax',
+    			url : 'getPostionBy',
+    			reader: {
+        			type: 'json',
+        			root: 'rows'
+    			}        	
+			}
+		});
+		
+		var grid= Ext.create('Ext.grid.Panel', {
+		    title: '点位信息',
+		    store: gridstore,
+		    columns: [
+		        { header: '代码',  dataIndex: 'pcode' },
+		        { header: '名称', dataIndex: 'pname' },
+		        { header: '任务', dataIndex: 'task' , flex: 1},
+				{
+					xtype : 'actioncolumn',				
+					flex : 1,
+					items : [ {
+						icon: 'resources/images/icons/fam/information.png',
+						tooltip : '修改',
+						handler : function(grid, rowIndex, colIndex) {
+							var rec = grid.getStore().getAt(rowIndex);
+
+							Ext.create('PT.view.window.EditPostionWindow',{
+								rec:rec,
+								listeners:{'beforedestroy':function(){									
+																		
+									gridstore.load({params:{bid:me.rec.data.bid }});
+							}}}).show();
+	
+						}},
+						{
+							icon: 'resources/images/icons/fam/delete.gif',
+							tooltip : '删除',
+							handler : function(grid, rowIndex, colIndex) {
+								var rec = grid.getStore().getAt(rowIndex);
+								
+		
+							}}
+ 					]
+				}
+		    ],
+		    height: 200,
+		    width: 590
+		});
+		
 		Ext.applyIf(me, {			 
 			layout: {
-			    type: 'border'
+			    type: 'vbox'
 			},
-			items:[	from],
+			items:[	from,grid],
 			 dockedItems:[ {
 					xtype : 'toolbar',
 					dock : 'top',
 					items : [ {
-							text : '保存',
-							tooltip : '保存楼宇信息',
-							iconCls : 'ok',
-							handler : function() {
-								
-								var form = me.down('form').getForm();
-            					if (form.isValid()) {
-                					form.submit({
-                						url: 'updateBuilding',    							
-                    					success: function(form, action) {
-                       						Ext.Msg.alert('Success', action.result.msg);
-                       						
-                       						me.close();
-                    					},
-                    					failure: function(form, action) {
-                        					Ext.Msg.alert('Failed', action.result.msg);
-                    					}
-                					});
-            					}
-							
-							}
-						}, {
 							text : '关闭',
 							tooltip : '关闭窗口',
 							iconCls : 'cross',
@@ -163,7 +211,9 @@
 			});
 		
 		me.callParent(arguments);	
-		me.on('beforerender',me.on_beforerender);			
+		me.on('beforerender',me.on_beforerender);
+		
+		gridstore.load({params:{bid:me.rec.data.bid }});
 			
 		},on_beforerender:function(me, eOpts){
 		

@@ -14,7 +14,7 @@ Ext.define('PT.view.task.BuildingPanel', {
     			],    	    			
     			proxy: {
         			type: 'ajax',
-        			url : 'getTasks',
+        			url : 'getBuildings',
         			reader: {
             			type: 'json',
             			root: 'rows'
@@ -51,7 +51,7 @@ Ext.define('PT.view.task.BuildingPanel', {
 							flex : 1,
 							items : [ {
 								icon: 'resources/images/icons/fam/edit.gif',
-								tooltip : '查看',
+								tooltip : '编辑',
 								handler : function(grid, rowIndex, colIndex) {
 									var rec = grid.getStore().getAt(rowIndex);
 																		
@@ -61,7 +61,33 @@ Ext.define('PT.view.task.BuildingPanel', {
 											gridstore.load({params:{taskType:0}});					
 									}}}).show();
 									
-								}}								
+								}},
+								 {
+									icon: 'resources/images/icons/fam/image_add.png',
+									tooltip : '添加点位',
+									handler : function(grid, rowIndex, colIndex) {
+										var rec = grid.getStore().getAt(rowIndex);
+																			
+										Ext.create('PT.view.window.EditPostionWindow',{
+											bid:rec.data.bid,
+											listeners:{'beforedestroy':function(){										
+												//gridstore.load({params:{taskType:0}});					
+										}}}).show();
+										
+									}},
+									 {
+										icon: 'resources/images/icons/fam/information.png',
+										tooltip : '查看',
+										handler : function(grid, rowIndex, colIndex) {
+											var rec = grid.getStore().getAt(rowIndex);
+																				
+											Ext.create('PT.view.window.ViewBuildingWindow',{
+												rec:rec,
+												listeners:{'beforedestroy':function(){										
+													//gridstore.load({params:{taskType:0}});					
+											}}}).show();
+											
+										}}
 		 					]
 						}
     				],
