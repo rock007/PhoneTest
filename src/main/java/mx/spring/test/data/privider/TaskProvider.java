@@ -73,4 +73,18 @@ public class TaskProvider {
 	}
 	
 	
+	public List<BuildingEntity> getBuildingForTask(String m){
+		
+		return mapper.getBuildingForTask(m);
+		
+	}
+	public List<PostionEntity>  getPostionForTask(String phoneNo,int bid){
+		MobileEntity m=new MobileEntity();
+		
+		m.setMobileId(phoneNo);
+		m.setStatus(bid);
+		
+		return mapper.getPostionForTask(m);
+	}
+	
 }

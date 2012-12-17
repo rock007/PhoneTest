@@ -30,4 +30,8 @@ public interface TaskMapper {
 	public void updateMobile(MobileEntity m);
 	public void delMobile(String phoneNo);
 	
+	
+	public List<BuildingEntity> getBuildingForTask(String m);
+	public List<PostionEntity>  getPostionForTask(MobileEntity m);
+	
 }

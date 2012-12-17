@@ -7,9 +7,9 @@
 	
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://223.4.214.65:3306/pt?autoReconnect=true&amp;characterEncoding=UTF-8&amp;useUnicode=true" />
-		<property name="username" value="bayard" />
-		<property name="password" value="1231#$!sFE2!" />
+		<property name="url" value="jdbc:mysql://121.197.13.97:3306/pt?autoReconnect=true&amp;characterEncoding=UTF-8&amp;useUnicode=true" />
+		<property name="username" value="stp6" />
+		<property name="password" value="stp6.com" />
 	</bean>
 	
 	<!-- 配置SqlSessionFactoryBean -->
