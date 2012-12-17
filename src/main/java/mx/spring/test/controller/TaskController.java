@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import mx.spring.test.data.entity.BuildingEntity;
 import mx.spring.test.data.entity.MobileEntity;
 import mx.spring.test.data.entity.PostionEntity;
+import mx.spring.test.data.entity.TPhoneEntity;
 import mx.spring.test.data.entity.TaskEntity;
 import mx.spring.test.data.privider.TaskProvider;
 import mx.spring.test.model.JsonData;
@@ -196,4 +197,32 @@ public class TaskController {
 	
 	
 	
+	@RequestMapping(value = "/addTestUser", method = RequestMethod.POST)
+	public @ResponseBody	JsonMsg addTestUser(@RequestParam String mobiles,@RequestParam int bid) {
+		
+		String list[]=mobiles.split(",");
+		
+		for(String m:list){
+			
+			TPhoneEntity entity=new TPhoneEntity();
+			
+			entity.setBid(bid);
+			entity.setPhoneNo(m);
+			
+			if(taskProvider.checkExistTT_Phone(entity)>0)continue;
+			
+			taskProvider.addTT_Phone(entity);
+			
+		}
+
+		return new JsonMsg(true, "添加测试人员成功！");
+	}
+	
+	@RequestMapping(value = "/getTestUserList", method = RequestMethod.GET)
+	public @ResponseBody	JsonData<MobileEntity> getTestUserList(@RequestParam int bid) {
+
+		List<MobileEntity> list = taskProvider.getTestUserList(bid);
+
+		return new JsonData<MobileEntity>(list.size(), list);
+	}
 }
