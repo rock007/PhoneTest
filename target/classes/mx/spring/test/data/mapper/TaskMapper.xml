@@ -107,4 +107,24 @@
 	</select>
 	
 	
+	<insert id="addTT_Phone"  parameterType="TPhoneEntity">
+		insert into tt_phone 
+			( bid,phoneNo )
+		values 
+			(#{bid},#{phoneNo})
+	
+	</insert>
+	<select id="checkExistTT_Phone" parameterType="TPhoneEntity" resultType="int">
+		select Count(0) as n from tt_phone 
+		where bid =#{bid} and phoneNo=#{phoneNo} 
+	</select>
+	
+	<select id="getTestUserList" parameterType="int" resultType="MobileEntity">
+		select a.* from  mobilephone a inner join tt_phone b
+		on a.mobileId=b.phoneNo 
+		where b.bid=#{value}
+	
+	</select>
+	
+	
 </mapper>

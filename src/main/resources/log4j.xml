@@ -11,7 +11,7 @@
 	</appender>
 	
 	<appender name="file"   class="org.apache.log4j.DailyRollingFileAppender">          
-  		<param name="File" value="D:/temp/phoneTest.log" />    
+  		<param name="File" value="/home/spring/logs/phoneTest.log" />    
   		<param name="Append" value="true" />    
   		<param name="DatePattern" value="'.'yyyy-MM-dd" />    
   		<layout class="org.apache.log4j.PatternLayout">    
@@ -56,8 +56,8 @@
 
 	<!-- Root Logger -->
 	<root>
-		<priority value="all" />
-		<appender-ref ref="console" />
+		<priority value="error" />
+		<appender-ref ref="file" />
 		
 	</root>
 	

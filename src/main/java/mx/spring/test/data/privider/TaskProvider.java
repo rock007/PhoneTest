@@ -5,6 +5,7 @@ import java.util.List;
 import mx.spring.test.data.entity.BuildingEntity;
 import mx.spring.test.data.entity.MobileEntity;
 import mx.spring.test.data.entity.PostionEntity;
+import mx.spring.test.data.entity.TPhoneEntity;
 import mx.spring.test.data.entity.TaskEntity;
 import mx.spring.test.data.mapper.TaskMapper;
 
@@ -87,4 +88,18 @@ public class TaskProvider {
 		return mapper.getPostionForTask(m);
 	}
 	
+	public void addTT_Phone(TPhoneEntity m){
+		
+		mapper.addTT_Phone(m);
+	}
+	
+	public int checkExistTT_Phone(TPhoneEntity m){
+		
+		return mapper.checkExistTT_Phone(m);
+	}
+	
+	public List<MobileEntity> getTestUserList(int bid){
+		
+		return mapper.getTestUserList(bid);
+	}
 }

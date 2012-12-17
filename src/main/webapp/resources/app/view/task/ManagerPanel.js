@@ -50,14 +50,13 @@ Ext.define('PT.view.task.ManagerPanel', {
 								tooltip : '人员安排',
 								handler : function(grid, rowIndex, colIndex) {
 									var rec = grid.getStore().getAt(rowIndex);
-									
-									/**
-									Ext.create('PT.view.window.EditTaskWindow',{
+																		
+									Ext.create('PT.view.window.TaskUserWindow',{
 										rec:rec,
 										listeners:{'beforedestroy':function(){										
-											gridstore.load({params:{taskType:0}});					
+											//gridstore.load({params:{taskType:0}});					
 									}}}).show();
-									**/
+									
 								}},
 								{
 								icon: 'resources/images/icons/fam/arrow_down.png',
@@ -84,7 +83,7 @@ Ext.define('PT.view.task.ManagerPanel', {
 										handler : function(grid, rowIndex, colIndex) {
 											var rec = grid.getStore().getAt(rowIndex);
 																				
-											Ext.create('PT.view.window.ViewBuildingWindow',{
+											Ext.create('PT.view.window.ViewBuildingWindow2',{
 												rec:rec,
 												listeners:{'beforedestroy':function(){										
 													//gridstore.load({params:{taskType:0}});					

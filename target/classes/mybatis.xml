@@ -22,6 +22,8 @@
 		<typeAlias type="mx.spring.test.data.entity.PostionEntity" alias="PostionEntity" />
 		
 		<typeAlias type="mx.spring.test.data.entity.MobileEntity" alias="MobileEntity" />
+
+		<typeAlias type="mx.spring.test.data.entity.TPhoneEntity" alias="TPhoneEntity" />										
 					
 	</typeAliases>
 	

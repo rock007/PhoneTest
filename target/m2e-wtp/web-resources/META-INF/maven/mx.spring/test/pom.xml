@@ -299,7 +299,9 @@
 						<include>view/window/EditTestUserWindow.js</include>
 						
 						<include>view/window/EditUserWindow.js</include>
+						<include>view/window/TaskUserWindow.js</include>
 						<include>view/window/ViewBuildingWindow.js</include>
+						<include>view/window/ViewBuildingWindow2.js</include>
 					</includes>
 				</aggregation>
 			</aggregations>
