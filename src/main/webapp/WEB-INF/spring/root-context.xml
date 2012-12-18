@@ -56,7 +56,7 @@
 	<!-- ftp文件扫描  -->
 	<bean id="ftpScanRunner" class="mx.spring.service.provider.FtpScanRunner"  init-method="start">			
 			<property name="scanInterval" value="3"/>
-			<property name="enable" value="1"></property>
+			<property name="enable" value="0"></property>
 			<property name="job" ref="ftpScanJob"/>
 	</bean> 
 	
