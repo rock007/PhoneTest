@@ -41,7 +41,14 @@ Ext.define('PT.view.task.ManagerPanel', {
 		        			return v;
         				}},
         				{ header: '楼宇名称', dataIndex: 'bname' , flex: 1},
-        				{ header: '巡检频率', dataIndex: 'frequency', flex: 1 },
+        				{ header: '巡检频率', dataIndex: 'frequency',renderer:function(v){
+        					        					
+        					var record= Ext.create('PT.store.FrequencyType').findRecord('value',v);
+		        			if(record!=null){
+		        				return record.data.name;
+		        			}
+		        			return v;
+        				}  },
         				{
 							xtype : 'actioncolumn',				
 					

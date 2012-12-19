@@ -68,10 +68,13 @@
 	
 	<select id="getMobileList"  parameterType="MobileEntity" resultType="MobileEntity">
 		select  mobileId,ecode,ename,status  
-		from mobilephone		
+		from mobilephone	
 		<where>		
 			<if test="mobileId != null and mobileId !='' ">
 				AND mobileId = #{mobileId}
+			</if>
+			<if test="status != null and status !=0 ">				
+				AND mobileid not in( select phoneno from tt_phone where bid=#{status})
 			</if>
 		</where>	
 	</select>
