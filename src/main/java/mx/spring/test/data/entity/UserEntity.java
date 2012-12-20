@@ -57,5 +57,8 @@ public class UserEntity {
 	public void setCreateIP(String createIP) {
 		this.createIP = createIP;
 	}
+	
+	
+	
 
 }

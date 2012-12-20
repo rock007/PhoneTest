@@ -1042,7 +1042,14 @@ Ext.define('PT.view.task.ManagerPanel', {
 		        			return v;
         				}},
         				{ header: '楼宇名称', dataIndex: 'bname' , flex: 1},
-        				{ header: '巡检频率', dataIndex: 'frequency', flex: 1 },
+        				{ header: '巡检频率', dataIndex: 'frequency',renderer:function(v){
+        					        					
+        					var record= Ext.create('PT.store.FrequencyType').findRecord('value',v);
+		        			if(record!=null){
+		        				return record.data.name;
+		        			}
+		        			return v;
+        				}  },
         				{
 							xtype : 'actioncolumn',				
 					
@@ -1660,7 +1667,7 @@ Ext.define('PT.view.task.TestUserPanel', {
 	                        }
 	                    ]
     				}
-    				/***,{
+    				,{
         				fieldLabel: '巡检频率',
         				name: 'frequency',        		   
         				allowBlank: false,
@@ -1670,7 +1677,7 @@ Ext.define('PT.view.task.TestUserPanel', {
     					displayField: 'name',
     					valueField: 'value',  
         				anchor:'50%'
-    				}***/,{
+    				},{
     					xtype:'textfield',
         				fieldLabel: '经度',
         				name: 'longitude',      	      
@@ -2368,7 +2375,7 @@ Ext.define('PT.view.task.TestUserPanel', {
 		me.callParent(arguments);	
 		me.on('beforerender',me.on_beforerender);
 		
-		gridstore.load();
+		gridstore.load({params:{status:me.rec.data.bid}});
 			
 		},on_beforerender:function(me, eOpts){
 		
@@ -2601,8 +2608,8 @@ Ext.define('PT.view.task.TestUserPanel', {
   
  Ext.define('PT.view.window.ViewBuildingWindow2',{
  	extend:'Ext.window.Window', 	
- 	width:600,
- 	height:640,
+ 	width:700,
+ 	height:440,
  	modal:true,
  	rec:null,
  	title:'楼宇信息查看', 	
@@ -2611,7 +2618,7 @@ Ext.define('PT.view.task.TestUserPanel', {
 		var me = this;
 		
 		var  from =Ext.create('Ext.form.Panel',{
-			region:'center',
+			region:'north',
 			bodyPadding: 5,
 			width:590,
 			layout: 'anchor',
@@ -2767,7 +2774,7 @@ Ext.define('PT.view.task.TestUserPanel', {
 				}
 		    ],
 		    height: 200,
-		    width: 590
+		    width: 350
 		});
 		
 		var gridstore2=	Ext.create('Ext.data.Store', {    	
@@ -2809,14 +2816,17 @@ Ext.define('PT.view.task.TestUserPanel', {
 				}
 		    ],
 		    height: 200,
-		    width: 590
+		    width: 350
 		});
 		
 		Ext.applyIf(me, {			 
 			layout: {
-			    type: 'vbox'
+			    type: 'border'
 			},
-			items:[	from,grid,grid2],
+			items:[	from,{
+				region:'center',
+				layout:'hbox',
+				items:[grid,grid2]}],
 			 dockedItems:[ {
 					xtype : 'toolbar',
 					dock : 'top',
