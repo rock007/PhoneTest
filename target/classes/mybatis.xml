@@ -24,6 +24,9 @@
 		<typeAlias type="mx.spring.test.data.entity.MobileEntity" alias="MobileEntity" />
 
 		<typeAlias type="mx.spring.test.data.entity.TPhoneEntity" alias="TPhoneEntity" />										
+		
+		<typeAlias type="mx.spring.test.data.entity.LogResultEntity" alias="LogResultEntity" />										
+								
 					
 	</typeAliases>
 	

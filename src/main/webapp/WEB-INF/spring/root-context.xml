@@ -51,12 +51,12 @@
 	
 	<bean id="ftpScanJob" class="mx.spring.service.provider.FtpScanJob">
 		<property name="reportProvider" ref="reportProviderForService" />	
-		<property name="scan_dir" value=" /data/ftphome/datang"></property>	
+		<property name="scan_dir" value="d:\temp\upload"></property>	
 	</bean>
 	<!-- ftp文件扫描  -->
 	<bean id="ftpScanRunner" class="mx.spring.service.provider.FtpScanRunner"  init-method="start">			
 			<property name="scanInterval" value="3"/>
-			<property name="enable" value="0"></property>
+			<property name="enable" value="1"></property>
 			<property name="job" ref="ftpScanJob"/>
 	</bean> 
 	

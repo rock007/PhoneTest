@@ -2,6 +2,7 @@ package mx.spring.test.data.privider;
 
 import java.util.List;
 
+import mx.spring.test.data.entity.LogResultEntity;
 import mx.spring.test.data.entity.ResultEntity;
 import mx.spring.test.data.mapper.ReportMapper;
 
@@ -27,5 +28,10 @@ public class ReportProvider {
 	public void addResult(ResultEntity m){
 		
 		mapper.addResult(m);
+	}
+	
+	public void addResult2(LogResultEntity m){
+		
+		mapper.addResult2(m);
 	}
 }
