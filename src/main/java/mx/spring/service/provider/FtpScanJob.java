@@ -18,6 +18,7 @@ import mx.spring.service.util.ZipFileFilter;
 import mx.spring.service.util.ZipUtil;
 import mx.spring.test.comm.App;
 import mx.spring.test.data.entity.ImportLogEntity;
+import mx.spring.test.data.entity.LogResultEntity;
 import mx.spring.test.data.entity.ResultEntity;
 import mx.spring.test.data.privider.ReportProvider;
 import mx.spring.test.data.privider.TaskProvider;
@@ -67,11 +68,13 @@ public class FtpScanJob {
 				
 				for(int i=0;i<rows.length;i++){
 				
-					ResultEntity entitiy =new ResultEntity();
+					LogResultEntity entitiy =new LogResultEntity();
 					String row=rows[i];
 					String cols[]=row.split("\t");
 					
-					if(cols.length<9){
+					String dataRow[]=new String[15];
+					
+					if(cols.length<6){
 						
 						//format		
 						
@@ -79,21 +82,36 @@ public class FtpScanJob {
 						continue;
 					}
 					
+					for(int ii=0;ii<cols.length;ii++){
+						
+						dataRow[ii]=cols[ii];
+					}
+					
+					for(int iii=cols.length;iii<dataRow.length;iii++){
+						
+						dataRow[iii]="";
+					}
+					
 					entitiy.setFileName(m1.getName());
 					
-					entitiy.setIndex(cols[0].trim());					
-					entitiy.setBeginDateTime(cols[1].trim());
-					entitiy.setEndDateTime(cols[2].trim());					
-					entitiy.setTestResult(cols[3].trim());					
-					entitiy.setPointIndex(cols[4].trim());
+					entitiy.setMtype(dataRow[0].trim());					
+					entitiy.setBeginDateTime(dataRow[1].trim());
+					entitiy.setEndDateTime(dataRow[2].trim());	
 					
-					entitiy.setLac(cols[5].trim());
-					entitiy.setRxlvl(cols[6].trim());
-					entitiy.setCqt(cols[7].trim());						
-					entitiy.setCallResult(cols[8].trim());
+					entitiy.setKey1(dataRow[3].trim());
+					entitiy.setKey2(dataRow[4].trim());
+					entitiy.setKey3(dataRow[5].trim());
+					entitiy.setKey4(dataRow[6].trim());
+					entitiy.setKey5(dataRow[7].trim());
+					
+					entitiy.setKey6(dataRow[8].trim());
+					entitiy.setKey7(dataRow[9].trim());
+					entitiy.setKey8(dataRow[10].trim());
+					entitiy.setKey9(dataRow[11].trim());
+					entitiy.setKey10(dataRow[12].trim());					
 					
 					entitiy.setCreateDt(new Date());
-					reportProvider.addResult(entitiy );	
+					reportProvider.addResult2(entitiy );	
 					
 				}			
 				
