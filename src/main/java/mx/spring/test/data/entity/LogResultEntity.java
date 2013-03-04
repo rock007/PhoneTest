@@ -2,7 +2,7 @@ package mx.spring.test.data.entity;
 
 import java.util.Date;
 
-public class LogResultEntity {
+public class LogResultEntity extends PagerInfo{
 
 	private int id;
 	private String fileName;

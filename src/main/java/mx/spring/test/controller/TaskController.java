@@ -169,7 +169,6 @@ public class TaskController {
 	@RequestMapping(value = "/TaskQuery.do", method = RequestMethod.GET)
 	public @ResponseBody 	SimpleEntity taskQuery(@RequestParam("phone") String mobileId) {
 		
-
 		String msg="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 		
 		String building_format="<Building BCode=\"%s\" BName=\"%s\" isNew=\"1\" Remarks=\"%s\">%s</Building>";

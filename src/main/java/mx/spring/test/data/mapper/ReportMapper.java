@@ -15,4 +15,7 @@ public interface ReportMapper {
 	public void addResult(ResultEntity m);
 	
 	public void addResult2(LogResultEntity m);
+	
+	public List<LogResultEntity> getResultV2List(LogResultEntity m);
+	public int  getResultV2ListNum(LogResultEntity m);
 }

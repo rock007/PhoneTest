@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mx.spring.test.data.entity.LogResultEntity;
 import mx.spring.test.data.entity.ResultEntity;
 import mx.spring.test.data.privider.ReportProvider;
 import mx.spring.test.data.privider.TaskProvider;
@@ -43,5 +44,14 @@ public class ReportController {
 		int rowNum=reportProvider.getResultListNum(m);
 	
 		return new JsonData<ResultEntity>(rowNum,list);
+	}
+	
+	@RequestMapping(value = "/testV2Result")
+	public @ResponseBody JsonData<LogResultEntity> getReportV2List(@ModelAttribute LogResultEntity m) {
+		
+		List<LogResultEntity> list= reportProvider.getResultV2List(m);
+		int rowNum=reportProvider.getResultV2ListNum(m);
+	
+		return new JsonData<LogResultEntity>(rowNum,list);
 	}
 }

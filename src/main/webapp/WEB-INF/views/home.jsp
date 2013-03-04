@@ -66,7 +66,7 @@
 </head>
 <body>
 <div id="north">
-  <div class="logo"> <!--   无线网络定点拨测数据采集管理系统  --></div>
+  <div class="logo"> 无线网络定点拨测数据采集管理系统  </div>
   <div style="float:right;padding-right:20px;padding-top:10px;color:black;font-size:12px" class="top">
   	<span>${sessionScope.PHONE_TEST_SESSION.userName}</span>&nbsp;|&nbsp;
   	<span><a href="javascript:void(0)" >修改密码</a></span>&nbsp;|&nbsp;

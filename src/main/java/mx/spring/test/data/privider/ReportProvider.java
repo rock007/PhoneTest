@@ -34,4 +34,12 @@ public class ReportProvider {
 		
 		mapper.addResult2(m);
 	}
+	
+	public List<LogResultEntity> getResultV2List(LogResultEntity m){
+		return mapper.getResultV2List(m);
+	}
+	public int  getResultV2ListNum(LogResultEntity m){
+		return mapper.getResultV2ListNum(m);
+		
+	}
 }

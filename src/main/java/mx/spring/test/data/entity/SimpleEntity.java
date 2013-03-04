@@ -3,7 +3,7 @@ package mx.spring.test.data.entity;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-//@XmlRootElement(name = "SimpleEntity")
+@XmlRootElement(name = "SimpleEntity")
 public class SimpleEntity {
 
 	private String root;
@@ -14,7 +14,7 @@ public class SimpleEntity {
 	public String getRoot() {
 		return root;
 	}
-	//@XmlElement
+	@XmlElement
 	public void setRoot(String root) {
 		this.root = root;
 	}

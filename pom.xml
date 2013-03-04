@@ -287,6 +287,13 @@
 						<include>view/NavView.js</include>
 						<include>view/Viewport.js</include>
 						<include>view/report/ResultPanel.js</include>
+						<include>view/report/ResultV2Panel.js</include>
+						
+						<include>view/report/TestAGridPanel.js</include>
+						<include>view/report/TestBGridPanel.js</include>
+						<include>view/report/TestCGridPanel.js</include>
+						<include>view/report/TestDGridPanel.js</include>
+						
 						<include>view/sys/UsersPanel.js</include>
 						
 						<include>view/task/ManagerPanel.js</include>
