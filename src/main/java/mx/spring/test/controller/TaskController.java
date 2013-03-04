@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import mx.spring.test.data.entity.BuildingEntity;
 import mx.spring.test.data.entity.MobileEntity;
 import mx.spring.test.data.entity.PostionEntity;
+import mx.spring.test.data.entity.SimpleEntity;
 import mx.spring.test.data.entity.TPhoneEntity;
 
 
@@ -166,7 +167,7 @@ public class TaskController {
 	 * *
 	 */
 	@RequestMapping(value = "/TaskQuery.do", method = RequestMethod.GET)
-	public @ResponseBody 	String taskQuery(@RequestParam("phone") String mobileId) {
+	public @ResponseBody 	SimpleEntity taskQuery(@RequestParam("phone") String mobileId) {
 		
 
 		String msg="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
@@ -191,10 +192,9 @@ public class TaskController {
 			
 			m1+=String.format(building_format, en.getBcode(),en.getBname(),en.getRemarks(),m2);			
 			
-		}
+		}		
 		
-		
-		return msg+m1;
+		return new SimpleEntity( msg+m1);
 	}
 	
 	

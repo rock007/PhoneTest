@@ -27,7 +27,7 @@
 
  <script type="text/javascript" src="resources/ext4/ext-all.js"></script>
 
-<script type="text/javascript" src="resources/loginForm.min.js"></script>
+<script type="text/javascript" src="resources/loginForm.js"></script>
  
 <script type="text/javascript">
 Ext.QuickTips.init();
