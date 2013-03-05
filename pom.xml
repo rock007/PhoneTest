@@ -281,6 +281,7 @@
 						<include>store/RegionType.js</include>
 						<include>store/RoleType.js</include>
 						<include>store/TaskType.js</include>
+						<include>store/ResultTypeStore.js</include>
 						
 						
 						<include>view/MainContent.js</include>

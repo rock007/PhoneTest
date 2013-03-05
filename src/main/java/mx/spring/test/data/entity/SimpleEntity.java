@@ -3,11 +3,14 @@ package mx.spring.test.data.entity;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "SimpleEntity")
+@XmlRootElement(name = "response")
 public class SimpleEntity {
 
 	private String root;
 
+	public SimpleEntity(){
+		
+	}
 	public SimpleEntity(String r){
 		this.root=r;
 	}

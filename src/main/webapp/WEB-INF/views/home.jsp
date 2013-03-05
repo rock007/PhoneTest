@@ -14,11 +14,11 @@
     
     
 	<script type="text/javascript" src="<c:url value= "resources/ext4/locale/ext-lang-zh_CN.js" />" ></script>
-   
-	<script type="text/javascript" src="resources/app.js"  ></script>
 <!--   
+	<script type="text/javascript" src="resources/app.js"  ></script>
+-->   
     <script type="text/javascript" src="resources/app-all.min.js"  ></script>
---> 
+ 
    
     <script type="text/javascript" >
 
@@ -61,6 +61,19 @@
     		 
     	     
     	});    	
+    	
+    	function testResult(v){
+    		
+    		var msg=v;
+    		if(v='00'){
+    			msg='成功';
+    		}else if(v=='01'){
+    			
+    			msg='失败';
+    		}
+    		
+    		return msg;
+    	}
     	
     </script>
 </head>

@@ -169,7 +169,7 @@ public class TaskController {
 	@RequestMapping(value = "/TaskQuery.do", method = RequestMethod.GET)
 	public @ResponseBody 	SimpleEntity taskQuery(@RequestParam("phone") String mobileId) {
 		
-		String msg="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+		String msg="";
 		
 		String building_format="<Building BCode=\"%s\" BName=\"%s\" isNew=\"1\" Remarks=\"%s\">%s</Building>";
 
@@ -196,6 +196,11 @@ public class TaskController {
 		return new SimpleEntity( msg+m1);
 	}
 	
+	@RequestMapping(value = "/Login.do", method = RequestMethod.GET)
+	public @ResponseBody 	String login(@RequestParam("phone") String mobileId,@RequestParam("code") String code) {
+		
+		return "Y";		
+	}
 	
 	
 	@RequestMapping(value = "/addTestUser", method = RequestMethod.POST)

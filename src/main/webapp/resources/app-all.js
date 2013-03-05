@@ -231,6 +231,26 @@ Ext.define('PT.model.ImageModel', {
         {"value":'B', "name":"室分系统业务质量拨测"},
         {"value":'C', "name":"室内外切换关系测试"} , 
  * **/
+
+
+  Ext.define('PT.store.ResultTypeStore', {
+	extend:'Ext.data.Store',
+    fields: ['value2','value1', 'key'],
+    data : [               
+    {'value2':'正常','value1':'接通','key':'101'},
+    {'value2':'噪音','value1':'接通','key':'102'},
+    {'value2':'串话','value1':'接通','key':'103'},
+    {'value2':'回音','value1':'接通','key':'104'},
+    {'value2':'无话音','value1':'接通','key':'105'},
+    
+    {'value2':'单通','value1':'接通','key':'106'},
+    {'value2':'掉话','value1':'接通','key':'107'},
+    {'value2':'信道忙','value1':'未接通','key':'201'},
+    {'value2':'无信号','value1':'未接通','key':'202'},
+    {'value2':'无声音中断','value1':'未接通','key':'203'},
+    {'value2':'拨通后立即中断','value1':'未接通','key':'204'}                
+    ]
+});
  
 Ext.define('PT.view.MainContent',
  {
@@ -827,6 +847,457 @@ var checkedStr='<img src="resources/images/icons/fam/accept.png"  border="0">';
 								
 			}					
 		});
+
+
+/*
+ * 测试结果列表V2
+ * */
+ 
+ Ext.define('PT.view.report.ResultV2Panel', {
+			extend:'Ext.panel.Panel',				
+			ids:null,
+			curRb:'A',
+			viewConfig : {
+				stripeRows : true
+			},			
+			initComponent : function() {
+				
+			var me = this;
+		
+			var gridstore=	Ext.create('Ext.data.Store', {    	
+    			fields:[
+    			        {name:'id',type:'int'}, 'fileName',  'beginDateTime', 'endDateTime',
+    			        {name:'mtype',type:'int'},'key1','key2','key3','key4','key5','key6','key7','key8','key9','key10','createDt'
+    			],    	
+    			proxy: {
+        			type: 'ajax',
+        			url : 'testV2Result',
+        			reader: {
+            			type: 'json',
+            			root: 'rows'
+        			}        	
+    			}
+			});
+			
+		var searchForm=Ext.create('Ext.form.Panel',{							
+							region:'north',
+    						fieldDefaults: {
+        						msgTarget: 'side',
+        						labelAlign : 'right',
+        						labelWidth: 105
+    						},
+    						defaults: {
+        						anchor: '100%'
+    						},
+    						items: [{        
+        						collapsible: true,
+        						collapsed: false,        						
+        						bodyStyle : 'padding:5px' ,
+        						title:'检索条件',
+        						defaultType: 'textfield',
+        						layout: 'anchor',
+        						defaults: {
+            						anchor: '50%'
+        						},
+        						items :[ 
+									{
+										fieldLabel : '<span style="color: #f00">*</span>开始时间',
+										xtype : 'fieldcontainer',
+										anchor:'100%',
+										layout:'hbox',
+										items:[{
+											xtype : 'datefield',
+											name : 'txt_begin_date',
+											format : 'Y-m-d',
+											value:new Date() ,
+											allowBlank: false 
+										},{
+											xtype : 'timefield',
+											name : 'txt_begin_time',
+											format : 'H:i:s',
+											value:'00:00:00',
+											allowBlank: false
+										}]							
+								}, 
+								{
+									fieldLabel : '<span style="color: #f00">*</span>结束时间',
+									xtype : 'fieldcontainer',
+									anchor:'100%',
+									layout:'hbox',
+									items:[{
+											xtype : 'datefield',
+											name : 'txt_end_date',
+											format : 'Y-m-d',
+											value:new Date() ,
+											allowBlank: false 
+										},{
+											xtype : 'timefield',
+											name : 'txt_end_time',
+											format : 'H:i:s',
+											value:'23:59:59',
+											allowBlank: false
+										}]							
+								}/***,	
+								{
+	        						xtype: 'container',
+	        						layout: 'column',
+	        						anchor: '0',
+	        						items: [{
+	            						xtype: 'container',		         
+	            						columnWidth: 0.3,
+	            						items: [{
+	            							xtype: 'textfield',
+	            							fieldLabel: '任务',	
+	            							maxLength:11,
+	                						name: 'txt_phone'
+	            						}]
+	        						}]
+	    						}**/,{
+	    					        xtype: 'radiogroup',	    					
+	    					        columns: 4,
+	    					        vertical: false,
+	    					        items: [
+	    					            { boxLabel: '定点场强测试', name: 'rb', inputValue: 'A' , checked: true},
+	    					            { boxLabel: '业务拨测', name: 'rb', inputValue: 'B'},
+	    					            { boxLabel: '室内外切换测试', name: 'rb', inputValue: 'C' },
+	    					            { boxLabel: 'CQT测试', name: 'rb', inputValue: 'D' }
+	    					        ],
+	    					        listeners:{'change':function(t,  newValue, oldValue,  eOpts){
+	    					        		    					        	
+	    					        	var curType=newValue.rb;
+	    					        	me.curRb=curType;
+	    					        	me.openGrid(curType,gridstore);
+	    					        	
+	    					        	loadData();	
+	    					        	
+	    					        }}
+	    					    }],
+        buttons: [{
+            text: '检索',
+            handler:function(){
+            	
+            	loadData();
+            }
+        },{
+        	text:'清空',
+        	handler:function(){        		
+        		
+        		var form =this.up('form').getForm();
+        		 
+        		form.reset();       		
+        		loadData();
+        	}
+        }]
+    }]			
+		});			
+					
+
+		
+	var loadData=function(){
+		
+	   	var form= searchForm.getForm();
+
+		var mtype=form.findField("rb").inputValue;
+		
+		var temp= form.findField("txt_begin_date").value;
+		var begin_date=Ext.Date.format(temp,'Ymd');
+		
+		temp=form.findField("txt_begin_time").getValue();
+		var begin_time=Ext.Date.format(temp,'His');
+		
+		temp=form.findField("txt_end_date").getValue();
+		
+		var end_date=Ext.Date.format(temp,'Ymd');
+		
+		temp=form.findField("txt_end_time").getValue();
+		var end_time=Ext.Date.format(temp,'His');
+		
+		gridstore.on('beforeload', function (store, options) {
+	      	        
+	    var extraParams={
+		        mtype:me.curRb,    
+		        TestBeginTime: begin_date+begin_time,		        
+		        TestEndTime:end_date+end_time
+		    };
+	        
+	        Ext.apply(store.proxy.extraParams, extraParams);
+	      
+	    });
+		
+		gridstore.load({
+		    params:{
+		    	start:0,    
+		        limit: 25,
+		        index:1
+		    }
+		});	    	   
+	    	   
+	};		
+
+		Ext.applyIf(me, {
+			layout:'border',  
+			items:[	searchForm,		
+				{
+					id:'grid_manager',
+					layout:'border',
+					region:'center'					
+				}
+			]
+		});
+				me.callParent(arguments);	
+				
+				me.openGrid('A',gridstore);
+				loadData();				
+			},
+		openGrid:function(m,gridstore){
+			
+			var gridManager=Ext.getCmp('grid_manager');
+
+        	if(gridManager!=null){
+        		
+        		var grid=Ext.create('PT.view.report.Test'+m+'GridPanel',{store:gridstore});
+        		
+        		gridManager.removeAll();
+        		gridManager.add(grid);	        		
+        	}			
+			
+		}
+		});
+/*
+ * 
+ * A类：定点场强测试
+ */
+
+Ext.define('PT.view.report.TestAGridPanel', {  
+    extend:'Ext.grid.Panel',
+    store:null,
+    initComponent : function() {
+		
+		var me = this;
+		
+		Ext.applyIf(me, {			
+			store: me.store,
+			region:'center',
+		    columns: [
+		        { text: '起始时间 ',  dataIndex: 'beginDateTime', flex: 1,renderer:function(v){
+					
+					if(v.length==14){
+						
+						return v.insert(12,':').insert(10,':').insert(8,' ').insert(6,'-').insert(4,'-');
+					}        					
+					return v;
+				} },
+		        { text: '结束时间 ', dataIndex: 'endDateTime', flex: 1 ,renderer:function(v){
+					
+					if(v.length==14){
+						
+						return v.insert(12,':').insert(10,':').insert(8,' ').insert(6,'-').insert(4,'-');
+					}        					
+					return v;
+				}},
+		        { text: '测试结果 ',  dataIndex: 'key1',renderer:testResult },
+		        { text: '点位序号 ', dataIndex: 'key2' },
+		        { text: 'LAC-CI', dataIndex: 'key3', flex: 1 },
+		        { text: 'RxLvl均值', dataIndex: 'key4' }
+		    ],
+		    dockedItems : [ 
+				{
+					xtype: 'pagingtoolbar',
+					store: me.store,   
+					dock: 'bottom',
+					displayInfo: true
+				 } ]
+		});		
+		
+		me.callParent(arguments);	
+    }
+});
+/*
+ * B类：业务拨测
+ **/
+Ext.define('PT.view.report.TestBGridPanel', {    
+    extend:'Ext.grid.Panel',
+    store:null,
+    initComponent : function() {
+		
+		var me = this;
+		
+		/***
+		var gridstore=	Ext.create('Ext.data.Store', {    	
+			fields:[
+			        {name:'id',type:'int'}, 'fileName', 'index', 'beginDateTime', 'endDateTime', 'testResult', 'pointIndex', 'lac', 'rxlvl', 'cqt', 'callResult'  				
+			],    	
+			proxy: {
+    			type: 'ajax',
+    			url : 'testResult',
+    			reader: {
+        			type: 'json',
+        			root: 'rows'
+    			}        	
+			}
+		});
+		***/
+		
+		Ext.applyIf(me, {			
+			store: me.store,
+			region:'center',
+		    columns: [
+		        { text: '起始时间 ',  dataIndex: 'beginDateTime', flex: 1 ,renderer:function(v){
+					
+					if(v.length==14){
+						
+						return v.insert(12,':').insert(10,':').insert(8,' ').insert(6,'-').insert(4,'-');
+					}        					
+					return v;
+				}},
+		        { text: '结束时间 ', dataIndex: 'endDateTime', flex: 1 ,renderer:function(v){
+					
+					if(v.length==14){
+						
+						return v.insert(12,':').insert(10,':').insert(8,' ').insert(6,'-').insert(4,'-');
+					}        					
+					return v;
+				}},
+		        { text: '业务拨测种类代码 ',  dataIndex: 'key1' },
+		        { text: '测试结果  ', dataIndex: 'key2' ,renderer:testResult},
+		        { text: '测试值', dataIndex: 'key3', flex: 1 }		        
+		    ],
+		    dockedItems : [ 
+		         {
+				 	xtype: 'pagingtoolbar',
+				    store: me.store,   
+				    dock: 'bottom',
+				    displayInfo: true
+				 }]
+		   });		
+		
+		me.callParent(arguments);	
+    }
+});
+/**
+ * C类：室内外切换测试
+ **/
+
+Ext.define('PT.view.report.TestCGridPanel', {  
+    extend:'Ext.grid.Panel',
+    store:null,
+    initComponent : function() {
+		
+		var me = this;
+		
+		Ext.applyIf(me, {			
+			store: me.store,
+			region:'center',
+		    columns: [
+		        { text: '起始时间 ',  dataIndex: 'beginDateTime', flex: 1 ,renderer:function(v){
+					
+					if(v.length==14){
+						
+						return v.insert(12,':').insert(10,':').insert(8,' ').insert(6,'-').insert(4,'-');
+					}        					
+					return v;
+				}},
+		        { text: '结束时间 ', dataIndex: 'endDateTime', flex: 1 ,renderer:function(v){
+					
+					if(v.length==14){
+						
+						return v.insert(12,':').insert(10,':').insert(8,' ').insert(6,'-').insert(4,'-');
+					}        					
+					return v;
+				}},
+		        { text: '测试结果 ',  dataIndex: 'key1' ,renderer:testResult},
+		        { text: '点位序号（室内） ', dataIndex: 'key2' },
+		        { text: 'LAC-CI（室内）', dataIndex: 'key3', flex: 1 },
+		        { text: 'RxLvl均值（室内）', dataIndex: 'key4' },
+		        { text: '点位序号（室外）', dataIndex: 'key5' },
+		        { text: 'LAC-CI（室外）', dataIndex: 'key6' },
+		        { text: 'RxLvl均值（室外）', dataIndex: 'key7' },
+		        { text: 'CQT质量等级', dataIndex: 'key8' },
+		        { text: '呼叫结果', dataIndex: 'key9' ,renderer:function(v){
+		        
+		        	var store=Ext.create('PT.store.ResultTypeStore');
+					var record= store.findRecord('key',v);
+					
+        			if(record!=null){
+        				return record.data.value1+' '+record.data.value2;
+        			}
+        			return v;
+		        	
+		        }}
+		    ],
+		    dockedItems : [ 
+				{
+					xtype: 'pagingtoolbar',
+					store: me.store,   
+					dock: 'bottom',
+					displayInfo: true
+				 } ]
+		});		
+		
+		me.callParent(arguments);	
+    }
+});
+/**
+ * 
+ * D类：CQT测试
+ **/
+
+Ext.define('PT.view.report.TestDGridPanel', {  
+    extend:'Ext.grid.Panel',
+    store:null,
+    initComponent : function() {
+		
+		var me = this;
+		
+		Ext.applyIf(me, {			
+			store: me.store,
+			region:'center',
+		    columns: [
+		        { text: '起始时间 ',  dataIndex: 'beginDateTime', flex: 1 ,renderer:function(v){
+					
+					if(v.length==14){
+						
+						return v.insert(12,':').insert(10,':').insert(8,' ').insert(6,'-').insert(4,'-');
+					}        					
+					return v;
+				}},
+		        { text: '结束时间 ', dataIndex: 'endDateTime', flex: 1 ,renderer:function(v){
+					
+					if(v.length==14){
+						
+						return v.insert(12,':').insert(10,':').insert(8,' ').insert(6,'-').insert(4,'-');
+					}        					
+					return v;
+				}},
+		        { text: '测试结果 ',  dataIndex: 'key1' ,renderer:testResult},
+		        { text: '点位序号 ', dataIndex: 'key2' },
+		        { text: 'LAC-CI', dataIndex: 'key3', flex: 1 },
+		        { text: 'RxLvl均值', dataIndex: 'key4' },
+		        { text: 'CQT质量等级', dataIndex: 'key5' },
+		        { text: '呼叫结果', dataIndex: 'key6',renderer:function(v){
+		        
+		        	var store=Ext.create('PT.store.ResultTypeStore');
+					var record= store.findRecord('key',v);
+					
+        			if(record!=null){
+        				return record.data.value1+' '+record.data.value2;
+        			}
+        			return v;
+		        	
+		        } }
+		    ],
+		    dockedItems : [ 
+				{
+					xtype: 'pagingtoolbar',
+					store: me.store,   
+					dock: 'bottom',
+					displayInfo: true
+				 } ]
+		});		
+		
+		me.callParent(arguments);	
+    }
+});
 /**
  * 
  * */
