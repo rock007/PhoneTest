@@ -6,7 +6,6 @@
         {"value":1, "name":"每周"},
         {"value":2, "name":"每两周"},
         {"value":3, "name":"每月"},    
-        {"value":4, "name":"每季"}      
-
+        {"value":4, "name":"每季"}    
     ]
 });

@@ -301,6 +301,8 @@
 						<include>view/task/BuildingPanel.js</include>
 						<include>view/task/PostionPanel.js</include>
 						<include>view/task/TestUserPanel.js</include>
+						
+						<include>view/task/TestPanel.js</include>
 												
 						<include>view/window/EditBuildingWindow.js</include>
 						<include>view/window/EditPostionWindow.js</include>

@@ -4,7 +4,8 @@
  **/
   
  Ext.define('PT.view.window.ViewBuildingWindow2',{
- 	extend:'Ext.window.Window', 	
+ 	extend:'Ext.window.Window', 
+ 	maximizable :true,
  	width:700,
  	height:440,
  	modal:true,
@@ -164,6 +165,37 @@
 							handler : function(grid, rowIndex, colIndex) {
 								var rec = grid.getStore().getAt(rowIndex);
 								
+								Ext.Msg.show({
+		    		 				title:'信息',
+		     						msg: '确定要删除点位信息吗？',
+		     						buttons: Ext.Msg.YESNO,
+		     						fn: function(buttonId,text,opt){
+		    	 
+		    	 						if(buttonId=='yes'){
+		    	 							
+		    								Ext.Ajax.request({
+												url : 'delPostion',
+												params : {
+													bid : rec.data.bid,
+													bid:me.rec.data.bid
+											},
+											success : function(response) {
+												var text = response.responseText;
+
+												var m = Ext.JSON.decode(text);
+											
+												if(m.success){										
+													gridstore.load({params:{bid:me.rec.data.bid }});
+												}else{
+													alert(m.msg);
+												}
+												
+											}});
+		    	 						}
+		     						},							 
+		     						icon: Ext.window.MessageBox.QUESTION
+							});
+								
 		
 							}
 						}
@@ -191,7 +223,7 @@
 		var grid2= Ext.create('Ext.grid.Panel', {	
 			title:'测试人员',
 		    store: gridstore2,		    
-		    selModel: Ext.create('Ext.selection.CheckboxModel',{mode:'SIMPLE'}),
+		    //selModel: Ext.create('Ext.selection.CheckboxModel',{mode:'SIMPLE'}),
 		    columns: [
 		        { header: '手机号码',  dataIndex: 'mobileId' },
 		        { header: '员工编码', dataIndex: 'ecode' },
@@ -206,6 +238,36 @@
 							handler : function(grid, rowIndex, colIndex) {
 								var rec = grid.getStore().getAt(rowIndex);
 								
+								Ext.Msg.show({
+		    		 				title:'信息',
+		     						msg: '确定要删除测试人员吗？',
+		     						buttons: Ext.Msg.YESNO,
+		     						fn: function(buttonId,text,opt){
+		    	 
+		    	 						if(buttonId=='yes'){
+		    	 							
+		    								Ext.Ajax.request({
+												url : 'delTestUser',
+												params : {
+													bid:me.rec.data.bid,
+													mobileId : rec.data.mobileId
+											},
+											success : function(response) {
+												var text = response.responseText;
+
+												var m = Ext.JSON.decode(text);
+											
+												if(m.success){										
+													gridstore2.load({params:{bid:me.rec.data.bid }});
+												}else{
+													alert(m.msg);
+												}
+												
+											}});
+		    	 						}
+		     						},							 
+		     						icon: Ext.window.MessageBox.QUESTION
+							});
 		
 							}
 						}

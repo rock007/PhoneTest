@@ -13,6 +13,7 @@ import mx.spring.test.data.entity.TPhoneEntity;
 
 import mx.spring.test.data.entity.TaskEntity;
 import mx.spring.test.data.privider.TaskProvider;
+
 import mx.spring.test.model.JsonData;
 import mx.spring.test.model.JsonMsg;
 
@@ -33,7 +34,7 @@ public class TaskController {
 	 private 	TaskProvider taskProvider;
 	 
 	 private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
-	 
+	 	 
 	 @RequestMapping(value="/submitTask",method=RequestMethod.POST)
 		public @ResponseBody JsonMsg submitTask(@ModelAttribute TaskEntity model,HttpServletRequest request){
 			
@@ -65,7 +66,7 @@ public class TaskController {
 			return new JsonData<TaskEntity>(list.size(),list);
 		}
 	 
-	 @RequestMapping(value="/getBuildings" ,method=RequestMethod.GET)
+	 @RequestMapping(value="/getBuildings" )
 		public @ResponseBody JsonData<BuildingEntity> getBuildingListBy(@ModelAttribute BuildingEntity entity){
 			
 			List<BuildingEntity>  list= taskProvider.getBuildingList(entity);
@@ -230,5 +231,21 @@ public class TaskController {
 		List<MobileEntity> list = taskProvider.getTestUserList(bid);
 
 		return new JsonData<MobileEntity>(list.size(), list);
+	}
+	
+	@RequestMapping(value = "/delTestUser", method = RequestMethod.POST)
+	public @ResponseBody	JsonMsg delTestUser(@RequestParam String mobile,@RequestParam int bid) {
+		
+		
+		if(mobile!=null&&bid>0){
+			
+			TPhoneEntity entity=new TPhoneEntity();
+			
+			entity.setBid(bid);
+			entity.setPhoneNo(mobile);
+			taskProvider.delTT_Phone(entity);			
+		}
+
+		return new JsonMsg(true, "删除测试人员成功！");
 	}
 }

@@ -102,4 +102,9 @@ public class TaskProvider {
 		
 		return mapper.getTestUserList(bid);
 	}
+	
+	public void delTT_Phone(TPhoneEntity m){
+		
+		mapper.delTT_Phone(m);
+	}
 }

@@ -50,8 +50,7 @@ Ext.define('PT.view.task.ManagerPanel', {
 		        			return v;
         				}  },
         				{
-							xtype : 'actioncolumn',				
-					
+							xtype : 'actioncolumn',	
 							items : [ {
 								icon: 'resources/images/icons/fam/edit.gif',
 								tooltip : '人员安排',

@@ -78,7 +78,7 @@ Ext.define("LoginWindow",{
 	            allowBlank : false,
 	            isLoader:true,
 	            blankText : '验证码不能为空',
-	            codeUrl: 'resources/images/validCode.jpg',
+	            codeUrl: 'verifycode.do',
 	            width : 160,
 	            listeners : {
 					specialKey : function(field, e) {

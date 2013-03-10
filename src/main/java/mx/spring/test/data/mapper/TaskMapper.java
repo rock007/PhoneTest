@@ -39,4 +39,6 @@ public interface TaskMapper {
 	public int checkExistTT_Phone(TPhoneEntity m);
 	
 	public List<MobileEntity> getTestUserList(int bid);
+	
+	public void delTT_Phone(TPhoneEntity m);
 }

@@ -8,7 +8,7 @@
  	width:600,
  	height:500,
  	modal:true,
- 	rec:null,
+ 	bid:null,
  	title:'测试人员安排', 	
 	initComponent : function() {
 		
@@ -72,7 +72,7 @@
 								url : 'addTestUser',
 								params : {
 									mobiles : idsStr,
-									bid:me.rec.data.bid
+									bid:me.bid
 							},
 							success : function(response) {
 								var text = response.responseText;
@@ -102,11 +102,11 @@
 		me.callParent(arguments);	
 		me.on('beforerender',me.on_beforerender);
 		
-		gridstore.load({params:{status:me.rec.data.bid}});
+		gridstore.load({params:{status:me.bid}});
 			
 		},on_beforerender:function(me, eOpts){
 		
-			var rec=me.rec;
+			var rec=me.bid;
 				
 			if(rec!=null){
 			
