@@ -1,0 +1,15 @@
+{"images": [
+        {
+        	"id":"user_tab",
+            "name": "用户管理",
+            "tooltip": "添加、修改、删除用户",            
+            "url": "PT.view.sys.UsersPanel",
+            "thumb_url": "resources/images/view/user-group-new.png"
+        },
+        {
+        	"id":"userRight_tab",
+            "name": "权限设置",            
+            "tooltip": "为用户设置使用权限",
+            "url": "",
+            "thumb_url": "resources/images/view/system-config.png"
+        }]}

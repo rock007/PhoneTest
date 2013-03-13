@@ -1,0 +1,16 @@
+{"images": [
+        {
+        	"id":"test_tab",
+            "name": "任务设置",
+            "tooltip": "任务设置",            
+            "url": "PT.view.task.TestPanel",
+            "thumb_url": "resources/images/view/List.png"
+        },
+         {
+        	"id":"testUser_tab",
+            "name": "巡检人员管理",
+            "tooltip": "巡检人员管理",            
+            "url": "PT.view.task.TestUserPanel",
+            "thumb_url": "resources/images/view/event_code.png"
+        }
+        ]}
