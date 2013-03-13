@@ -10,7 +10,7 @@ Ext.define('PT.view.task.TestUserPanel', {
 		
 	var gridstore=	Ext.create('Ext.data.Store', {    	
     			fields:[
-    			        {name:'mobileId',type:'int'}, 'ecode','ename',{name:'status',type:'int'}
+    			        'mobileId', 'ecode','ename',{name:'status',type:'int'}
     			],    	    			
     			proxy: {
         			type: 'ajax',
@@ -33,14 +33,7 @@ Ext.define('PT.view.task.TestUserPanel', {
     				store: gridstore,
     				columns: [
         				{ header: '手机号码',  dataIndex: 'mobileId' , flex: 1},
-        				{ header: '员工编码', dataIndex: 'ecode' ,renderer:function(v){
-        					        					
-        					//var record= Ext.create('MobileTest.store.TestTaskType').findRecord('value',v);
-		        			//if(record!=null){
-		        			//	return record.data.name;
-		        			//}
-		        			return v;
-        				}},
+        				{ header: '员工编码', dataIndex: 'ecode' },
         				{ header: '姓名', dataIndex: 'ename', flex: 1 },
         				{
 							xtype : 'actioncolumn',				
@@ -83,6 +76,49 @@ Ext.define('PT.view.task.TestUserPanel', {
 							tooltip : '删除巡检人员',						
 							iconCls : 'del',
 							handler : function() {
+								
+								var selModel=me.child('grid').getSelectionModel().getSelection();
+								
+								if(selModel.length==0){
+									
+									alert("请选择要删除巡检人员！");
+									return;
+								}
+								
+								var idsStr='';
+			             		for(var i=0;i<selModel.length;i++ ){			             	
+			             			idsStr+=selModel[i].data.mobileId+';';			             	
+			             		}
+								
+								Ext.Msg.show({
+			    		 				title:'信息',
+			     						msg: '确定要删除选中巡检人员吗？',
+			     						buttons: Ext.Msg.YESNO,
+			     						fn: function(buttonId,text,opt){
+			    	 
+			    	 						if(buttonId=='yes'){
+			    	 							
+			    								Ext.Ajax.request({
+													url : 'delMobile',
+													params : {
+														mobileStr : idsStr
+												},
+												success : function(response) {
+													var text = response.responseText;
+
+													var m = Ext.JSON.decode(text);
+												
+													if(m.success){										
+														gridstore.load({params:{key:''}});
+													}else{
+														alert(m.msg);
+													}
+													
+												}});
+			    	 						}
+			     						},							 
+			     						icon: Ext.window.MessageBox.QUESTION
+								});
 								
 							}
 						} ]}

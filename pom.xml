@@ -306,8 +306,14 @@
 						<include>view/window/EditPostionWindow.js</include>
 						<include>view/window/EditTaskWindow.js</include>
 						<include>view/window/EditTestUserWindow.js</include>
-						
+						<include>view/window/TaskUserSelWindow.js</include>
 						<include>view/window/EditUserWindow.js</include>
+						
+						<include>view/window/PostionListWindow.js</include>
+						
+						<include>view/window/EditPostionTaskWindow.js</include>
+						<include>view/window/TaskListWindow.js</include>
+						
 						<include>view/window/TaskUserWindow.js</include>
 						<include>view/window/ViewBuildingWindow.js</include>
 						<include>view/window/ViewBuildingWindow2.js</include>

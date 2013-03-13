@@ -4,8 +4,8 @@
   
  Ext.define('PT.view.window.EditTestUserWindow',{
  	extend:'Ext.window.Window', 	
- 	width:600,
- 	height:400,
+ 	width:500,
+ 	height:300,
  	modal:true,
  	rec:null,
  	title:'巡检人员编辑', 	
@@ -25,21 +25,21 @@
 					{
         				fieldLabel: '手机号码',
         				name: 'mobileId',
-        				anchor:'50%',
+        				anchor:'70%',
         				allowBlank: false
     				},{
         				fieldLabel: '姓名',
         				name: 'ename',
         				allowBlank: false,
         				maxLength :15,				
-        				anchor:'50%'
+        				anchor:'70%'
     				},{
         				fieldLabel: '员工编码',
         				name: 'ecode',
         				allowBlank: false,
         				allowBlank: false,
         				maxLength :15,
-        				anchor:'50%'
+        				anchor:'70%'
     				}]			
 		});
 		

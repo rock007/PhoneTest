@@ -92,18 +92,22 @@
         				xtype:'combobox',
     					store: Ext.create('PT.store.FrequencyType'),
     					queryMode: 'local',
+    					value:1,
+    					hidden:true,
     					displayField: 'name',
     					valueField: 'value',  
         				anchor:'50%'
     				},{
     					xtype:'textfield',
         				fieldLabel: '经度',
+        				hidden:true,
         				name: 'longitude',      	      
         				anchor:'50%'
     				}
     				,{
         				fieldLabel: '纬度',
         				xtype:'textfield',
+        				hidden:true,
         				name: 'latitude',        			
         				anchor:'50%'
     				},{

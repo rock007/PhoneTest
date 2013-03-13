@@ -4,8 +4,8 @@
   
  Ext.define('PT.view.window.EditPostionWindow',{
  	extend:'Ext.window.Window', 	
- 	width:600,
- 	height:400,
+ 	width:500,
+ 	height:300,
  	modal:true,
  	rec:null,
  	bid:0,
@@ -37,6 +37,7 @@
     				},{
     		            xtype: 'fieldcontainer',
     		            fieldLabel: '任务',
+    		            hidden:true,
     		            defaultType: 'checkboxfield',
     		            items: [
     		                {

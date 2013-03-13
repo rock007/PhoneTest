@@ -176,8 +176,7 @@ Ext.define('PT.model.ImageModel', {
         {"value":1, "name":"每周"},
         {"value":2, "name":"每两周"},
         {"value":3, "name":"每月"},    
-        {"value":4, "name":"每季"}      
-
+        {"value":4, "name":"每季"}    
     ]
 });
 
@@ -1473,6 +1472,8 @@ Ext.define('PT.view.sys.UsersPanel', {
 Ext.define('PT.view.task.ManagerPanel', {
 			extend:'Ext.panel.Panel',				
 			ids:null,
+			searchKey:'',
+			curAddress:'',
 			viewConfig : {
 				stripeRows : true
 			},			
@@ -1493,15 +1494,88 @@ Ext.define('PT.view.task.ManagerPanel', {
         			}        	
     			}
 			});
-		
+			var loadData=function(){
+				
+				gridstore.on('beforeload', function (store, options) {
+			      	        
+			        var extraParams={
+			        	bname:me.searchKey,	
+			        	acode:me.curAddress
+				    };
+			        
+			        Ext.apply(store.proxy.extraParams, extraParams);
+			      
+			    });
+				
+				gridstore.load({
+				    params:{
+				    	start:0,    
+				        limit: 25,
+				        index:1
+				    }
+				});
+			};
+			
+			var store = Ext.create('Ext.data.TreeStore', {
+			    root: {
+			        expanded: true,
+			        children: [
+			                   { text: "上海市", expanded: true, 
+			                	   children: [
+		{"value":"A", "text":"黄浦区", leaf: true },
+		{"value":"B", "text":"卢湾区", leaf: true },
+		{"value": "C", "text":"徐汇区", leaf: true },
+		{"value":"D", "text":"长宁区", leaf: true },
+		{"value":"E", "text":"静安区", leaf: true },
+		{"value":"F", "text":"普陀区", leaf: true },
+		{"value":"G" , "text":"闸北区", leaf: true },
+		{"value":"H", "text":"虹口区", leaf: true },
+		{"value":"I", "text":"杨浦区", leaf: true },
+		{"value":"J", "text":"宝山区", leaf: true },
+		{"value":"K", "text":"闵行区", leaf: true },
+		{"value":"L", "text":"嘉定区", leaf: true },
+		{"value":"M", "text":"浦东新区", leaf: true },
+		{"value":"N", "text":"松江区", leaf: true },
+		{"value":"O", "text":"金山区", leaf: true },
+		{"value":"P", "text":"青浦区", leaf: true },
+		{"value":"Q", "text":"奉贤区", leaf: true },
+		{"value":"R", "text":"崇明县", leaf: true }
+		                       		            ] }       
+			            
+			        ]
+			    }
+			});
+
+		 var treePanel=	Ext.create('Ext.tree.Panel', {
+			    title: '区域信息',
+			    width: 200,
+			    store: store,
+			    region:'west',
+			    rootVisible: false,
+			    listeners:{'selectionchange':function( t,  selected,  eOpts){
+			    	
+			    	if(selected!=null&&selected.length>0){
+			    		
+			    		if(selected[0].raw.value){
+			    			
+			    			me.curAddress=selected[0].raw.value;
+			    			loadData();
+			    		}else{
+			    			me.curAddress='';
+			    			loadData();
+			    		}	    		
+			    			
+			    	}
+			    }}
+			});
+			
 		Ext.applyIf(me, {
 			layout:'border',  
-			items:[			
+			items:[		treePanel,	
 				{
 					xtype:'gridpanel',
 					region:'center',
-					title: '任务管理',
-					//selModel: Ext.create('Ext.selection.CheckboxModel',{mode:'SIMPLE'}),
+					title: '任务管理',					
     				store: gridstore,
     				columns: [
         				{ header: '行政区域',  dataIndex: 'acode'  ,renderer:function(v){
@@ -1513,28 +1587,30 @@ Ext.define('PT.view.task.ManagerPanel', {
 		        			return v;
         				}},
         				{ header: '楼宇名称', dataIndex: 'bname' , flex: 1},
-        				{ header: '巡检频率', dataIndex: 'frequency',renderer:function(v){
-        					        					
-        					var record= Ext.create('PT.store.FrequencyType').findRecord('value',v);
-		        			if(record!=null){
-		        				return record.data.name;
+        				{ header: '类型', dataIndex: 'btype', flex: 1  ,renderer:function(v){
+			        		
+		        			if(v==0){
+		        				return "普通楼宇";
+		        			}else if(v==1){
+		        				return "VIP";
+		        			}else if(v==2){
+		        				return "WIP";
 		        			}
 		        			return v;
-        				}  },
+        				}}, 
         				{
-							xtype : 'actioncolumn',				
-					
+							xtype : 'actioncolumn',	
+							header: '人员及任务安排',
 							items : [ {
 								icon: 'resources/images/icons/fam/edit.gif',
 								tooltip : '人员安排',
 								handler : function(grid, rowIndex, colIndex) {
 									var rec = grid.getStore().getAt(rowIndex);
 																		
-									Ext.create('PT.view.window.TaskUserWindow',{
-										rec:rec,
-										listeners:{'beforedestroy':function(){										
-											//gridstore.load({params:{taskType:0}});					
-									}}}).show();
+									Ext.create('PT.view.window.TaskUserSelWindow',{
+											rec:rec,
+											bid:rec.data.bid
+										}).show();
 									
 								}},
 								{
@@ -1542,33 +1618,11 @@ Ext.define('PT.view.task.ManagerPanel', {
 								tooltip : '任务安排',
 								handler : function(grid, rowIndex, colIndex) {
 									var rec = grid.getStore().getAt(rowIndex);
-
-									Ext.create('PT.view.window.EditPostionWindow',{
-										bid:rec.data.bid,
-										listeners:{'beforedestroy':function(){										
-											//gridstore.load({params:{taskType:0}});					
-									}}}).show();
-
+									
+									Ext.create('PT.view.window.TaskListWindow',{
+											rec:rec
+										}).show();
 								}}
-		 					]
-						},
-        				{
-							xtype : 'actioncolumn',				
-					
-							items : [
-									 {
-										icon: 'resources/images/icons/fam/information.png',
-										tooltip : '查看',
-										handler : function(grid, rowIndex, colIndex) {
-											var rec = grid.getStore().getAt(rowIndex);
-																				
-											Ext.create('PT.view.window.ViewBuildingWindow2',{
-												rec:rec,
-												listeners:{'beforedestroy':function(){										
-													//gridstore.load({params:{taskType:0}});					
-											}}}).show();
-											
-										}}
 		 					]
 						}
     				],
@@ -1594,6 +1648,8 @@ Ext.define('PT.view.task.ManagerPanel', {
 Ext.define('PT.view.task.BuildingPanel', {
 			extend:'Ext.panel.Panel',				
 			ids:null,
+			searchKey:'',
+			curAddress:'',
 			viewConfig : {
 				stripeRows : true
 			},			
@@ -1615,9 +1671,83 @@ Ext.define('PT.view.task.BuildingPanel', {
     			}
 			});
 		
+	var loadData=function(){
+		
+		gridstore.on('beforeload', function (store, options) {
+	      	        
+	        var extraParams={
+	        	bname:me.searchKey,	
+	        	acode:me.curAddress
+		    };
+	        
+	        Ext.apply(store.proxy.extraParams, extraParams);
+	      
+	    });
+		
+		gridstore.load({
+		    params:{
+		    	start:0,    
+		        limit: 25,
+		        index:1
+		    }
+		});
+	};
+	
+	var store = Ext.create('Ext.data.TreeStore', {
+	    root: {
+	        expanded: true,
+	        children: [
+	                   { text: "上海市", expanded: true, 
+	                	   children: [
+{"value":"A", "text":"黄浦区", leaf: true },
+{"value":"B", "text":"卢湾区", leaf: true },
+{"value": "C", "text":"徐汇区", leaf: true },
+{"value":"D", "text":"长宁区", leaf: true },
+{"value":"E", "text":"静安区", leaf: true },
+{"value":"F", "text":"普陀区", leaf: true },
+{"value":"G" , "text":"闸北区", leaf: true },
+{"value":"H", "text":"虹口区", leaf: true },
+{"value":"I", "text":"杨浦区", leaf: true },
+{"value":"J", "text":"宝山区", leaf: true },
+{"value":"K", "text":"闵行区", leaf: true },
+{"value":"L", "text":"嘉定区", leaf: true },
+{"value":"M", "text":"浦东新区", leaf: true },
+{"value":"N", "text":"松江区", leaf: true },
+{"value":"O", "text":"金山区", leaf: true },
+{"value":"P", "text":"青浦区", leaf: true },
+{"value":"Q", "text":"奉贤区", leaf: true },
+{"value":"R", "text":"崇明县", leaf: true }
+                       		            ] }       
+	            
+	        ]
+	    }
+	});
+
+ var treePanel=	Ext.create('Ext.tree.Panel', {
+	    title: '区域信息',
+	    width: 200,
+	    store: store,
+	    region:'west',
+	    rootVisible: false,
+	    listeners:{'selectionchange':function( t,  selected,  eOpts){
+	    	
+	    	if(selected!=null&&selected.length>0){
+	    		
+	    		if(selected[0].raw.value){
+	    			
+	    			me.curAddress=selected[0].raw.value;
+	    			loadData();
+	    		}else{
+	    			me.curAddress='';
+	    			loadData();
+	    		}	    		
+	    			
+	    	}
+	    }}
+	});
 		Ext.applyIf(me, {
 			layout:'border',  
-			items:[			
+			items:[	treePanel,		
 				{
 					xtype:'gridpanel',
 					region:'center',
@@ -1646,8 +1776,7 @@ Ext.define('PT.view.task.BuildingPanel', {
 		        				return record.data.name;
 		        			}
 		        			return v;
-        				}},
-        				//{ header: '点位数量(个)', dataIndex: 'callTime', flex: 1 },
+        				}},        				
         				{
 							xtype : 'actioncolumn',				
 							flex : 1,
@@ -1663,33 +1792,17 @@ Ext.define('PT.view.task.BuildingPanel', {
 											gridstore.load({params:{taskType:0}});					
 									}}}).show();
 									
-								}}/****,
-								 {
-									icon: 'resources/images/icons/fam/image_add.png',
-									tooltip : '添加点位',
-									handler : function(grid, rowIndex, colIndex) {
-										var rec = grid.getStore().getAt(rowIndex);
-																			
-										Ext.create('PT.view.window.EditPostionWindow',{
-											bid:rec.data.bid,
-											listeners:{'beforedestroy':function(){										
-												//gridstore.load({params:{taskType:0}});					
-										}}}).show();
-										
-									}},
-									 {
+								}},{
 										icon: 'resources/images/icons/fam/information.png',
-										tooltip : '查看',
+										tooltip : '点位查看',
 										handler : function(grid, rowIndex, colIndex) {
 											var rec = grid.getStore().getAt(rowIndex);
 																				
-											Ext.create('PT.view.window.ViewBuildingWindow',{
-												rec:rec,
-												listeners:{'beforedestroy':function(){										
-													//gridstore.load({params:{taskType:0}});					
-											}}}).show();
+											Ext.create('PT.view.window.PostionListWindow',{
+													rec:rec
+												}).show();
 											
-										}}***/
+										}}
 		 					]
 						}
     				],
@@ -1714,6 +1827,49 @@ Ext.define('PT.view.task.BuildingPanel', {
 							tooltip : '删除楼宇',						
 							iconCls : 'del',
 							handler : function() {
+								
+								var selModel=me.child('grid').getSelectionModel().getSelection();
+								
+								if(selModel.length==0){
+									
+									alert("请选择要删除楼宇！");
+									return;
+								}
+								
+								var idsStr='';
+			             		for(var i=0;i<selModel.length;i++ ){			             	
+			             			idsStr+=selModel[i].data.bid+';';			             	
+			             		}
+								
+								Ext.Msg.show({
+			    		 				title:'信息',
+			     						msg: '确定要删除选中楼宇吗？',
+			     						buttons: Ext.Msg.YESNO,
+			     						fn: function(buttonId,text,opt){
+			    	 
+			    	 						if(buttonId=='yes'){
+			    	 							
+			    								Ext.Ajax.request({
+													url : 'delBuilding',
+													params : {
+														bidStr : idsStr
+												},
+												success : function(response) {
+													var text = response.responseText;
+
+													var m = Ext.JSON.decode(text);
+												
+													if(m.success){										
+														gridstore.load({params:{key:''}});
+													}else{
+														alert(m.msg);
+													}
+													
+												}});
+			    	 						}
+			     						},							 
+			     						icon: Ext.window.MessageBox.QUESTION
+								});
 								
 							}
 						},'-',{
@@ -1957,7 +2113,7 @@ Ext.define('PT.view.task.TestUserPanel', {
 		
 	var gridstore=	Ext.create('Ext.data.Store', {    	
     			fields:[
-    			        {name:'mobileId',type:'int'}, 'ecode','ename',{name:'status',type:'int'}
+    			        'mobileId', 'ecode','ename',{name:'status',type:'int'}
     			],    	    			
     			proxy: {
         			type: 'ajax',
@@ -1980,14 +2136,7 @@ Ext.define('PT.view.task.TestUserPanel', {
     				store: gridstore,
     				columns: [
         				{ header: '手机号码',  dataIndex: 'mobileId' , flex: 1},
-        				{ header: '员工编码', dataIndex: 'ecode' ,renderer:function(v){
-        					        					
-        					//var record= Ext.create('MobileTest.store.TestTaskType').findRecord('value',v);
-		        			//if(record!=null){
-		        			//	return record.data.name;
-		        			//}
-		        			return v;
-        				}},
+        				{ header: '员工编码', dataIndex: 'ecode' },
         				{ header: '姓名', dataIndex: 'ename', flex: 1 },
         				{
 							xtype : 'actioncolumn',				
@@ -2030,6 +2179,49 @@ Ext.define('PT.view.task.TestUserPanel', {
 							tooltip : '删除巡检人员',						
 							iconCls : 'del',
 							handler : function() {
+								
+								var selModel=me.child('grid').getSelectionModel().getSelection();
+								
+								if(selModel.length==0){
+									
+									alert("请选择要删除巡检人员！");
+									return;
+								}
+								
+								var idsStr='';
+			             		for(var i=0;i<selModel.length;i++ ){			             	
+			             			idsStr+=selModel[i].data.mobileId+';';			             	
+			             		}
+								
+								Ext.Msg.show({
+			    		 				title:'信息',
+			     						msg: '确定要删除选中巡检人员吗？',
+			     						buttons: Ext.Msg.YESNO,
+			     						fn: function(buttonId,text,opt){
+			    	 
+			    	 						if(buttonId=='yes'){
+			    	 							
+			    								Ext.Ajax.request({
+													url : 'delMobile',
+													params : {
+														mobileStr : idsStr
+												},
+												success : function(response) {
+													var text = response.responseText;
+
+													var m = Ext.JSON.decode(text);
+												
+													if(m.success){										
+														gridstore.load({params:{key:''}});
+													}else{
+														alert(m.msg);
+													}
+													
+												}});
+			    	 						}
+			     						},							 
+			     						icon: Ext.window.MessageBox.QUESTION
+								});
 								
 							}
 						} ]}
@@ -2145,18 +2337,22 @@ Ext.define('PT.view.task.TestUserPanel', {
         				xtype:'combobox',
     					store: Ext.create('PT.store.FrequencyType'),
     					queryMode: 'local',
+    					value:1,
+    					hidden:true,
     					displayField: 'name',
     					valueField: 'value',  
         				anchor:'50%'
     				},{
     					xtype:'textfield',
         				fieldLabel: '经度',
+        				hidden:true,
         				name: 'longitude',      	      
         				anchor:'50%'
     				}
     				,{
         				fieldLabel: '纬度',
         				xtype:'textfield',
+        				hidden:true,
         				name: 'latitude',        			
         				anchor:'50%'
     				},{
@@ -2236,8 +2432,8 @@ Ext.define('PT.view.task.TestUserPanel', {
   
  Ext.define('PT.view.window.EditPostionWindow',{
  	extend:'Ext.window.Window', 	
- 	width:600,
- 	height:400,
+ 	width:500,
+ 	height:300,
  	modal:true,
  	rec:null,
  	bid:0,
@@ -2269,6 +2465,7 @@ Ext.define('PT.view.task.TestUserPanel', {
     				},{
     		            xtype: 'fieldcontainer',
     		            fieldLabel: '任务',
+    		            hidden:true,
     		            defaultType: 'checkboxfield',
     		            items: [
     		                {
@@ -2540,8 +2737,8 @@ Ext.define('PT.view.task.TestUserPanel', {
   
  Ext.define('PT.view.window.EditTestUserWindow',{
  	extend:'Ext.window.Window', 	
- 	width:600,
- 	height:400,
+ 	width:500,
+ 	height:300,
  	modal:true,
  	rec:null,
  	title:'巡检人员编辑', 	
@@ -2561,21 +2758,21 @@ Ext.define('PT.view.task.TestUserPanel', {
 					{
         				fieldLabel: '手机号码',
         				name: 'mobileId',
-        				anchor:'50%',
+        				anchor:'70%',
         				allowBlank: false
     				},{
         				fieldLabel: '姓名',
         				name: 'ename',
         				allowBlank: false,
         				maxLength :15,				
-        				anchor:'50%'
+        				anchor:'70%'
     				},{
         				fieldLabel: '员工编码',
         				name: 'ecode',
         				allowBlank: false,
         				allowBlank: false,
         				maxLength :15,
-        				anchor:'50%'
+        				anchor:'70%'
     				}]			
 		});
 		
@@ -2624,6 +2821,145 @@ Ext.define('PT.view.task.TestUserPanel', {
 		},on_beforerender:function(me, eOpts){
 		
 			var rec=me.rec;
+				
+			if(rec!=null){
+			
+					var form=me.child('form').getForm();
+			
+					form.loadRecord(rec);
+			 }
+	  }		
+	});
+
+/**
+ * 
+ **/
+  
+ Ext.define('PT.view.window.TaskUserSelWindow',{
+ 	extend:'Ext.window.Window', 	
+ 	width:600,
+ 	height:500,
+ 	modal:true,
+ 	bid:null, 	
+ 	title:'测试人员安排', 	
+	initComponent : function() {
+		
+		var me = this;
+		
+		var gridstore=	Ext.create('Ext.data.Store', {    	
+			fields:[
+			        {name:'mobileId',type:'int'}, 'ecode','ename',{name:'status',type:'int'}
+			],    	    			
+			proxy: {
+    			type: 'ajax',
+    			url : 'getTestUserList',
+    			reader: {
+        			type: 'json',
+        			root: 'rows'
+    			}        	
+			}
+		});
+		
+		var grid= Ext.create('Ext.grid.Panel', {		  
+		    store: gridstore,
+		    region:'center',
+		    selModel: Ext.create('Ext.selection.CheckboxModel',{mode:'SIMPLE'}),
+		    columns: [
+		        { header: '手机号码',  dataIndex: 'mobileId' },
+		        { header: '员工编码', dataIndex: 'ecode' },
+		        { header: '姓名', dataIndex: 'ename' , flex: 1},
+		        {
+					xtype : 'actioncolumn',				
+					flex : 1,
+					items : [ 
+						{
+							icon: 'resources/images/icons/fam/delete.gif',
+							tooltip : '删除',
+							handler : function(grid, rowIndex, colIndex) {
+								var rec = grid.getStore().getAt(rowIndex);
+								
+								Ext.Msg.show({
+		    		 				title:'信息',
+		     						msg: '确定要删除测试人员吗？',
+		     						buttons: Ext.Msg.YESNO,
+		     						fn: function(buttonId,text,opt){
+		    	 
+		    	 						if(buttonId=='yes'){
+		    	 							
+		    								Ext.Ajax.request({
+												url : 'delTestUser',
+												params : {
+													bid:me.rec.data.bid,
+													mobile : rec.data.mobileId
+											},
+											success : function(response) {
+												var text = response.responseText;
+
+												var m = Ext.JSON.decode(text);
+											
+												if(m.success){										
+													gridstore.load({params:{bid:me.bid }});
+												}else{
+													alert(m.msg);
+												}
+												
+											}});
+		    	 						}
+		     						},							 
+		     						icon: Ext.window.MessageBox.QUESTION
+							});
+		
+							}
+						}
+ 					]
+				}
+		    ],
+		    height: 220,
+		    width: 590
+		});
+		
+		Ext.applyIf(me, {			 
+			layout: {
+			    type: 'border'
+			},
+			items:[	grid],
+			 dockedItems:[ {
+					xtype : 'toolbar',
+					dock : 'top',
+					items : [{
+						text : '添加',
+						tooltip : '添加测试人员',
+						iconCls : 'add',
+						handler : function() {
+
+							Ext.create('PT.view.window.TaskUserWindow',{								
+								bid:me.bid,
+								listeners:{'beforedestroy':function(){									
+									
+									gridstore.load({params:{bid:me.bid }});
+								}}
+							}).show();
+							
+							}
+						},'-',{
+							text : '关闭',
+							tooltip : '关闭窗口',
+							iconCls : 'cross',
+							handler : function() {
+									me.close();
+							}
+					}]
+				}]
+			});
+		
+		me.callParent(arguments);	
+		//me.on('beforerender',me.on_beforerender);
+		
+		gridstore.load({params:{bid:me.bid}});
+			
+		},on_beforerender:function(me, eOpts){
+		
+			var rec=me.bid;
 				
 			if(rec!=null){
 			
@@ -2747,13 +3083,436 @@ Ext.define('PT.view.task.TestUserPanel', {
  * 
  **/
   
- Ext.define('PT.view.window.TaskUserWindow',{
+ Ext.define('PT.view.window.PostionListWindow',{
  	extend:'Ext.window.Window', 	
  	width:600,
  	height:500,
  	modal:true,
  	rec:null,
- 	title:'测试人员安排', 	
+ 	title:'点位信息查看', 	
+	initComponent : function() {
+		
+		var me = this;
+		
+		var gridstore=	Ext.create('Ext.data.Store', {    	
+			fields:[    			 
+			 {name:'bid',type:'int'}, 'pcode', 'pname', 'task',{name: 'pid',type:'int'}, 'remarks'    			 
+			],    	    			
+			proxy: {
+    			type: 'ajax',
+    			url : 'getPostionBy',
+    			reader: {
+        			type: 'json',
+        			root: 'rows'
+    			}        	
+			}
+		});
+		
+		var grid= Ext.create('Ext.grid.Panel', {
+		    //title: '点位信息',
+		    region:'center',
+		    store: gridstore,
+		    columns: [
+		        { header: '代码',  dataIndex: 'pcode', flex: 1 },
+		        { header: '名称', dataIndex: 'pname' , flex: 2},
+		        { header: '任务', dataIndex: 'task' ,hidden:true},
+				{
+					xtype : 'actioncolumn',				
+					flex : 1,
+					items : [ {
+						icon: 'resources/images/icons/fam/information.png',
+						tooltip : '修改',
+						handler : function(grid, rowIndex, colIndex) {
+							var rec = grid.getStore().getAt(rowIndex);
+
+							Ext.create('PT.view.window.EditPostionWindow',{
+								rec:rec,
+								bid:me.rec.data.bid,
+								listeners:{'beforedestroy':function(){									
+																		
+									gridstore.load({params:{bid:me.rec.data.bid }});
+							}}}).show();
+	
+						}},
+						{
+							icon: 'resources/images/icons/fam/delete.gif',
+							tooltip : '删除',
+							handler : function(grid, rowIndex, colIndex) {
+								var rec = grid.getStore().getAt(rowIndex);
+								
+								Ext.Msg.show({
+		    		 				title:'信息',
+		     						msg: '确定要删除选中点位信息吗？',
+		     						buttons: Ext.Msg.YESNO,
+		     						fn: function(buttonId,text,opt){
+		    	 
+		    	 						if(buttonId=='yes'){
+		    	 							
+		    								Ext.Ajax.request({
+												url : 'delPostion',
+												params : {
+													pid : rec.data.pid
+											},
+											success : function(response) {
+												var text = response.responseText;
+
+												var m = Ext.JSON.decode(text);
+											
+												if(m.success){										
+													gridstore.load({params:{bid:me.rec.data.bid }});
+												}else{
+													alert(m.msg);
+												}
+												
+											}});
+		    	 						}
+		     						},							 
+		     						icon: Ext.window.MessageBox.QUESTION
+							});
+		
+							}
+						}
+ 					]
+				}
+		    ]
+		});
+		
+		Ext.applyIf(me, {			 
+			layout: {
+			    type: 'border'
+			},
+			items:[	grid],
+			
+		    dockedItems:[ {
+				xtype : 'toolbar',
+				dock : 'top',
+				items : [{
+					text : '添加',
+					tooltip : '添加点位',
+					iconCls : 'add',
+					handler : function() {
+
+						Ext.create('PT.view.window.EditPostionWindow',{
+							rec:null,
+							bid:me.rec.data.bid,
+							listeners:{'beforedestroy':function(){									
+																	
+								gridstore.load({params:{bid:me.rec.data.bid }});
+						}}}).show();
+						
+						}
+					},'-',{
+						text : '关闭',
+						tooltip : '关闭窗口',
+						iconCls : 'cross',
+						handler : function() {
+								me.close();
+						}
+				}]
+			}]
+			
+			});
+		
+		me.callParent(arguments);	
+		//me.on('beforerender',me.on_beforerender);
+		
+		
+		gridstore.load({params:{bid:me.rec.data.bid }});
+			
+		},on_beforerender:function(me, eOpts){
+		
+			var rec=me.rec;
+				
+			if(rec!=null){
+			
+					var form=me.child('form').getForm();
+			
+					form.loadRecord(rec);
+			 }
+	  }		
+	});
+/**
+ * 
+ **/
+  
+ Ext.define('PT.view.window.EditPostionTaskWindow',{
+ 	extend:'Ext.window.Window', 	
+ 	width:500,
+ 	height:300,
+ 	modal:true,
+ 	rec:null,
+ 	bid:0,
+ 	title:'点位任务编辑', 	
+	initComponent : function() {
+		
+		var me = this;
+		
+		var checkTask=function(v){
+			
+			if(me.rec.data.task.indexOf(v)==-1){
+				
+				return false;
+			}
+			return true;
+		};
+		
+		var  from =Ext.create('Ext.form.Panel',{
+			region:'center',
+			bodyPadding: 5,
+			layout: 'anchor',
+			fieldDefaults: {
+            	labelAlign: 'right'            				
+        	},        	
+    		defaultType: 'textfield',
+			items:[
+					{
+        				fieldLabel: '点位代码',
+        				name: 'pcode',
+        				anchor:'50%',
+        				hidden:true,
+        				allowBlank: false
+    				},{
+        				fieldLabel: '名称',
+        				name: 'pname',
+        				allowBlank: false,
+        				maxLength :15,
+        				hidden:true,
+        				anchor:'50%'
+    				},{
+    		            xtype: 'fieldcontainer',
+    		            fieldLabel: '任务',    		            
+    		            defaultType: 'checkboxfield',
+    		            items: [
+    		                {
+    		                    boxLabel  : '定点场强测试',
+    		                    name      : 'task',
+    		                    inputValue: 'A',
+    		                    checked:checkTask('A'),
+    		                    id        : 'task_checkbox1'
+    		                }, {
+    		                    boxLabel  : '业务拨测',
+    		                    name      : 'task',
+    		                    inputValue: 'B',    
+    		                    checked:checkTask('B'),
+    		                    id        : 'task_checkbox2'
+    		                }, {
+    		                    boxLabel  : '室内外切换测试',
+    		                    name      : 'task',
+    		                    inputValue: 'C',
+    		                    checked:checkTask('C'),
+    		                    id        : 'task_checkbox3'
+    		                }, {
+    		                    boxLabel  : 'CQT测试',
+    		                    name      : 'task',
+    		                    inputValue: 'D',
+    		                    checked:checkTask('D'),
+    		                    id        : 'task_checkbox4'
+    		                }
+    		            ]
+    		        },{
+        				fieldLabel: '备注',
+        				name: 'remarks',
+        				hidden:true,
+        				allowBlank: false,
+        				maxLength :100,				
+        				anchor:'50%'
+    				},{
+    			        xtype: 'hiddenfield',
+    			        name: 'bid',
+    			        value:me.bid
+    			    },{
+    			        xtype: 'hiddenfield',
+    			        name: 'pid',
+    			        value:0
+    			    }]			
+		});
+		
+		Ext.applyIf(me, {
+			layout:'border',  
+			items:[	from],
+			 dockedItems:[ {
+					xtype : 'toolbar',
+					dock : 'top',
+					items : [ {
+							text : '保存',
+							tooltip : '保存点位信息',
+							iconCls : 'ok',
+							handler : function() {
+								
+								var form = me.down('form').getForm();
+            					if (form.isValid()) {
+                					form.submit({
+                						url: 'updatePostion',    							
+                    					success: function(form, action) {
+                       						Ext.Msg.alert('Success', action.result.msg);
+                       						
+                       						me.close();
+                    					},
+                    					failure: function(form, action) {
+                        					Ext.Msg.alert('Failed', action.result.msg);
+                    					}
+                					});
+            					}
+							
+							}
+						}, {
+							text : '关闭',
+							tooltip : '关闭窗口',
+							iconCls : 'cross',
+							handler : function() {
+									me.close();
+							}
+					}]
+				}]
+			});
+		
+		me.callParent(arguments);	
+		me.on('afterrender',me.on_beforerender);			
+			
+		},on_beforerender:function(me, eOpts){
+		
+			var rec=me.rec;
+				
+			if(rec!=null){
+			
+					var form=me.child('form').getForm();
+			
+					form.loadRecord(rec);
+					 
+			 }
+	  }		
+	});
+
+/**
+ * 
+ **/
+  
+ Ext.define('PT.view.window.TaskListWindow',{
+ 	extend:'Ext.window.Window', 	
+ 	width:600,
+ 	height:500,
+ 	modal:true,
+ 	rec:null,
+ 	title:'任务信息查看', 	
+	initComponent : function() {
+		
+		var me = this;
+		
+		var gridstore=	Ext.create('Ext.data.Store', {    	
+			fields:[    			 
+			 {name:'bid',type:'int'}, 'pcode', 'pname', 'task',{name: 'pid',type:'int'}, 'remarks'    			 
+			],    	    			
+			proxy: {
+    			type: 'ajax',
+    			url : 'getPostionBy',
+    			reader: {
+        			type: 'json',
+        			root: 'rows'
+    			}        	
+			}
+		});
+		
+		var grid= Ext.create('Ext.grid.Panel', {
+		    //title: '点位信息',
+		    region:'center',
+		    store: gridstore,
+		    columns: [
+		        { header: '代码',  dataIndex: 'pcode',hidden:true },
+		        { header: '名称', dataIndex: 'pname',hidden:true},
+		        { header: '任务', dataIndex: 'task' , flex: 1,renderer:function(v){
+		        	
+		        	var msg="";
+		        	var list=v.split(',');
+		        	for (var i=0;i<list.length ;i++ )    
+		            {    
+		                if( list[i]=="A"){
+		                	
+		                	msg+="定点场强测试 ";
+		                }else if(list[i]=="B"){
+		                	msg+="业务拨测 ";
+		                }else if(list[i]=="C"){
+		                	msg+="室内外切换测试 ";
+		                }else if(list[i]=="D"){
+		                	msg+="CQT测试 ";
+		                }		                
+		            } 
+		        	return msg;
+		        	
+		        }},
+				{
+					xtype : 'actioncolumn',				
+					flex : 1,
+					items : [ {
+						icon: 'resources/images/icons/fam/information.png',
+						tooltip : '修改',
+						handler : function(grid, rowIndex, colIndex) {
+							var rec = grid.getStore().getAt(rowIndex);
+
+							Ext.create('PT.view.window.EditPostionTaskWindow',{
+								rec:rec,
+								bid:me.rec.data.bid,
+								listeners:{'beforedestroy':function(){									
+																		
+									gridstore.load({params:{bid:me.rec.data.bid }});
+							}}}).show();
+	
+						}}
+ 					]
+				}
+		    ]
+		});
+		
+		Ext.applyIf(me, {			 
+			layout: {
+			    type: 'border'
+			},
+			items:[	grid],
+			
+		    dockedItems:[ {
+				xtype : 'toolbar',
+				dock : 'top',
+				items : [{
+						text : '关闭',
+						tooltip : '关闭窗口',
+						iconCls : 'cross',
+						handler : function() {
+								me.close();
+						}
+				}]
+			}]
+			
+			});
+		
+		me.callParent(arguments);	
+		//me.on('beforerender',me.on_beforerender);
+		
+		
+		gridstore.load({params:{bid:me.rec.data.bid }});
+			
+		},on_beforerender:function(me, eOpts){
+		
+			var rec=me.rec;
+				
+			if(rec!=null){
+			
+					var form=me.child('form').getForm();
+			
+					form.loadRecord(rec);
+			 }
+	  }		
+	});
+
+/**
+ * 
+ **/
+  
+ Ext.define('PT.view.window.TaskUserWindow',{
+ 	extend:'Ext.window.Window', 	
+ 	width:500,
+ 	height:300,
+ 	modal:true,
+ 	bid:null,
+ 	title:'添加测试人员', 	
 	initComponent : function() {
 		
 		var me = this;
@@ -2816,7 +3575,7 @@ Ext.define('PT.view.task.TestUserPanel', {
 								url : 'addTestUser',
 								params : {
 									mobiles : idsStr,
-									bid:me.rec.data.bid
+									bid:me.bid
 							},
 							success : function(response) {
 								var text = response.responseText;
@@ -2844,19 +3603,19 @@ Ext.define('PT.view.task.TestUserPanel', {
 			});
 		
 		me.callParent(arguments);	
-		me.on('beforerender',me.on_beforerender);
+		//me.on('beforerender',me.on_beforerender);
 		
-		gridstore.load({params:{status:me.rec.data.bid}});
+		gridstore.load({params:{status:me.bid}});
 			
 		},on_beforerender:function(me, eOpts){
 		
-			var rec=me.rec;
+			var rec=me.bid;
 				
 			if(rec!=null){
 			
-					//var form=me.child('form').getForm();
+					var form=me.child('form').getForm();
 			
-					//form.loadRecord(rec);
+					form.loadRecord(rec);
 			 }
 	  }		
 	});
@@ -3078,7 +3837,8 @@ Ext.define('PT.view.task.TestUserPanel', {
  **/
   
  Ext.define('PT.view.window.ViewBuildingWindow2',{
- 	extend:'Ext.window.Window', 	
+ 	extend:'Ext.window.Window', 
+ 	maximizable :true,
  	width:700,
  	height:440,
  	modal:true,
@@ -3238,6 +3998,37 @@ Ext.define('PT.view.task.TestUserPanel', {
 							handler : function(grid, rowIndex, colIndex) {
 								var rec = grid.getStore().getAt(rowIndex);
 								
+								Ext.Msg.show({
+		    		 				title:'信息',
+		     						msg: '确定要删除点位信息吗？',
+		     						buttons: Ext.Msg.YESNO,
+		     						fn: function(buttonId,text,opt){
+		    	 
+		    	 						if(buttonId=='yes'){
+		    	 							
+		    								Ext.Ajax.request({
+												url : 'delPostion',
+												params : {
+													bid : rec.data.bid,
+													bid:me.rec.data.bid
+											},
+											success : function(response) {
+												var text = response.responseText;
+
+												var m = Ext.JSON.decode(text);
+											
+												if(m.success){										
+													gridstore.load({params:{bid:me.rec.data.bid }});
+												}else{
+													alert(m.msg);
+												}
+												
+											}});
+		    	 						}
+		     						},							 
+		     						icon: Ext.window.MessageBox.QUESTION
+							});
+								
 		
 							}
 						}
@@ -3265,7 +4056,7 @@ Ext.define('PT.view.task.TestUserPanel', {
 		var grid2= Ext.create('Ext.grid.Panel', {	
 			title:'测试人员',
 		    store: gridstore2,		    
-		    selModel: Ext.create('Ext.selection.CheckboxModel',{mode:'SIMPLE'}),
+		    //selModel: Ext.create('Ext.selection.CheckboxModel',{mode:'SIMPLE'}),
 		    columns: [
 		        { header: '手机号码',  dataIndex: 'mobileId' },
 		        { header: '员工编码', dataIndex: 'ecode' },
@@ -3280,6 +4071,36 @@ Ext.define('PT.view.task.TestUserPanel', {
 							handler : function(grid, rowIndex, colIndex) {
 								var rec = grid.getStore().getAt(rowIndex);
 								
+								Ext.Msg.show({
+		    		 				title:'信息',
+		     						msg: '确定要删除测试人员吗？',
+		     						buttons: Ext.Msg.YESNO,
+		     						fn: function(buttonId,text,opt){
+		    	 
+		    	 						if(buttonId=='yes'){
+		    	 							
+		    								Ext.Ajax.request({
+												url : 'delTestUser',
+												params : {
+													bid:me.rec.data.bid,
+													mobileId : rec.data.mobileId
+											},
+											success : function(response) {
+												var text = response.responseText;
+
+												var m = Ext.JSON.decode(text);
+											
+												if(m.success){										
+													gridstore2.load({params:{bid:me.rec.data.bid }});
+												}else{
+													alert(m.msg);
+												}
+												
+											}});
+		    	 						}
+		     						},							 
+		     						icon: Ext.window.MessageBox.QUESTION
+							});
 		
 							}
 						}

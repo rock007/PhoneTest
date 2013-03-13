@@ -16,7 +16,7 @@ public interface TaskMapper {
 	
 	public List<BuildingEntity>  getBuildingList(BuildingEntity m);
 	public void updateBuilding(BuildingEntity m);
-	public void delBuilding(BuildingEntity m);
+	public void delBuilding(int m);
 	public void addBuilding(BuildingEntity m);
 	
 	
@@ -39,4 +39,6 @@ public interface TaskMapper {
 	public int checkExistTT_Phone(TPhoneEntity m);
 	
 	public List<MobileEntity> getTestUserList(int bid);
+	
+	public void delTT_Phone(TPhoneEntity m);
 }

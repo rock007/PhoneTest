@@ -33,7 +33,7 @@ public class TaskProvider {
 	public void updateBuilding(BuildingEntity m){
 		mapper.updateBuilding(m);
 	}
-	public void delBuilding(BuildingEntity m){
+	public void delBuilding(int m){
 		mapper.delBuilding(m);
 	}
 	public void addBuilding(BuildingEntity m){
@@ -101,5 +101,10 @@ public class TaskProvider {
 	public List<MobileEntity> getTestUserList(int bid){
 		
 		return mapper.getTestUserList(bid);
+	}
+	
+	public void delTT_Phone(TPhoneEntity m){
+		
+		mapper.delTT_Phone(m);
 	}
 }

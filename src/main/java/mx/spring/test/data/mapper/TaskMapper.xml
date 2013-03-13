@@ -24,6 +24,15 @@
 	<select id="getBuildingList" resultType="BuildingEntity"  parameterType="BuildingEntity">	
 		select  bid,bcode,bname,blocation,btype,frequency,acode,remarks,longitude,latitude 
 		from  building
+		<where>		
+			<if test="acode != null and acode !='' ">
+				AND acode = #{acode}
+			</if>
+			<if test="bname != null and bname !='' ">				
+				AND bname like concat('%',#{bname},'%')
+			</if>
+		</where>	
+		
 	</select>
 	
 	<insert id="addBuilding" parameterType="BuildingEntity">
@@ -42,7 +51,7 @@
 	
 	</update>
 	<delete id="delBuilding"  parameterType="int">
-		delete building where  bid=#{bid}	
+		delete from building where  bid=#{bid}	
 	</delete>
 	
 	
@@ -90,7 +99,7 @@
 		where mobileId=#{mobileId}
 	</update>
 	<delete id="delMobile"  parameterType="string">
-			delete  mobilephone  where mobileId=#{mobileId}
+			delete from  mobilephone  where mobileId=#{value}
 	</delete>
 	
 	
@@ -129,5 +138,8 @@
 	
 	</select>
 	
+	<delete id="delTT_Phone" parameterType="TPhoneEntity">
+		delete from tt_phone where bid=#{bid} and phoneNo= #{phoneNo}
+	</delete>
 	
 </mapper>

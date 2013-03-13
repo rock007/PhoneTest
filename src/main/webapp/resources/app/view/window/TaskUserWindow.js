@@ -5,11 +5,11 @@
   
  Ext.define('PT.view.window.TaskUserWindow',{
  	extend:'Ext.window.Window', 	
- 	width:600,
- 	height:500,
+ 	width:500,
+ 	height:300,
  	modal:true,
- 	rec:null,
- 	title:'测试人员安排', 	
+ 	bid:null,
+ 	title:'添加测试人员', 	
 	initComponent : function() {
 		
 		var me = this;
@@ -72,7 +72,7 @@
 								url : 'addTestUser',
 								params : {
 									mobiles : idsStr,
-									bid:me.rec.data.bid
+									bid:me.bid
 							},
 							success : function(response) {
 								var text = response.responseText;
@@ -100,19 +100,19 @@
 			});
 		
 		me.callParent(arguments);	
-		me.on('beforerender',me.on_beforerender);
+		//me.on('beforerender',me.on_beforerender);
 		
-		gridstore.load({params:{status:me.rec.data.bid}});
+		gridstore.load({params:{status:me.bid}});
 			
 		},on_beforerender:function(me, eOpts){
 		
-			var rec=me.rec;
+			var rec=me.bid;
 				
 			if(rec!=null){
 			
-					//var form=me.child('form').getForm();
+					var form=me.child('form').getForm();
 			
-					//form.loadRecord(rec);
+					form.loadRecord(rec);
 			 }
 	  }		
 	});

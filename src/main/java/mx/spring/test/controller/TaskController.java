@@ -13,6 +13,7 @@ import mx.spring.test.data.entity.TPhoneEntity;
 
 import mx.spring.test.data.entity.TaskEntity;
 import mx.spring.test.data.privider.TaskProvider;
+
 import mx.spring.test.model.JsonData;
 import mx.spring.test.model.JsonMsg;
 
@@ -33,7 +34,7 @@ public class TaskController {
 	 private 	TaskProvider taskProvider;
 	 
 	 private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
-	 
+	 	 
 	 @RequestMapping(value="/submitTask",method=RequestMethod.POST)
 		public @ResponseBody JsonMsg submitTask(@ModelAttribute TaskEntity model,HttpServletRequest request){
 			
@@ -65,7 +66,7 @@ public class TaskController {
 			return new JsonData<TaskEntity>(list.size(),list);
 		}
 	 
-	 @RequestMapping(value="/getBuildings" ,method=RequestMethod.GET)
+	 @RequestMapping(value="/getBuildings" )
 		public @ResponseBody JsonData<BuildingEntity> getBuildingListBy(@ModelAttribute BuildingEntity entity){
 			
 			List<BuildingEntity>  list= taskProvider.getBuildingList(entity);
@@ -90,6 +91,23 @@ public class TaskController {
 			return  msg;
 	 }
 	 
+	 	/*
+	 	 * 删除楼宇
+	 	 * */
+	 	@RequestMapping(value = "/delBuilding", method = RequestMethod.POST)
+		public @ResponseBody
+		JsonMsg delBuilding(@RequestParam String bidStr) {
+			
+			String[] bidList=bidStr.split(";");
+			
+			for(String bid:bidList){
+				
+				taskProvider.delBuilding(Integer.parseInt(bid));	
+				
+			}
+
+			return new JsonMsg(true, "删除楼宇信息成功！");
+		}
 	 
 	@RequestMapping(value = "/getPostionBy", method = RequestMethod.GET)
 	public @ResponseBody
@@ -118,10 +136,10 @@ public class TaskController {
 		return  msg;
 	}
 
-	@RequestMapping(value = "/delPostion", method = RequestMethod.GET)
+	@RequestMapping(value = "/delPostion", method = RequestMethod.POST)
 	public @ResponseBody
-	JsonMsg delPostion(@RequestParam int bid) {
-		taskProvider.delPostion(bid);
+	JsonMsg delPostion(@RequestParam int pid) {
+		taskProvider.delPostion(pid);
 
 		return new JsonMsg(true, "删除点位信息成功！");
 	}
@@ -154,10 +172,17 @@ public class TaskController {
 		return msg;
 	}
 
-	@RequestMapping(value = "/delMobile", method = RequestMethod.GET)
+	@RequestMapping(value = "/delMobile", method = RequestMethod.POST)
 	public @ResponseBody
-	JsonMsg delMobile(@RequestParam String mobileId) {
-		taskProvider.delMobile(mobileId);
+	JsonMsg delMobile(@RequestParam String mobileStr) {
+		
+		String[] mobileList=mobileStr.split(";");
+		
+		for(String mobileId:mobileList){
+			
+			taskProvider.delMobile(mobileId);	
+			
+		}
 
 		return new JsonMsg(true, "删除巡检人员信息成功！");
 	}
@@ -230,5 +255,21 @@ public class TaskController {
 		List<MobileEntity> list = taskProvider.getTestUserList(bid);
 
 		return new JsonData<MobileEntity>(list.size(), list);
+	}
+	
+	@RequestMapping(value = "/delTestUser", method = RequestMethod.POST)
+	public @ResponseBody	JsonMsg delTestUser(@RequestParam String mobile,@RequestParam int bid) {
+		
+		
+		if(mobile!=null&&bid>0){
+			
+			TPhoneEntity entity=new TPhoneEntity();
+			
+			entity.setBid(bid);
+			entity.setPhoneNo(mobile);
+			taskProvider.delTT_Phone(entity);			
+		}
+
+		return new JsonMsg(true, "删除测试人员成功！");
 	}
 }
