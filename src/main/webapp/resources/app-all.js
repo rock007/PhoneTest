@@ -865,7 +865,7 @@ var checkedStr='<img src="resources/images/icons/fam/accept.png"  border="0">';
 		
 			var gridstore=	Ext.create('Ext.data.Store', {    	
     			fields:[
-    			        {name:'id',type:'int'}, 'fileName',  'beginDateTime', 'endDateTime',
+    			        {name:'id',type:'int'}, 'fileName',  'beginDateTime', 'endDateTime','phone',
     			        {name:'mtype',type:'int'},'key1','key2','key3','key4','key5','key6','key7','key8','key9','key10','createDt'
     			],    	
     			proxy: {
@@ -936,22 +936,7 @@ var checkedStr='<img src="resources/images/icons/fam/accept.png"  border="0">';
 											value:'23:59:59',
 											allowBlank: false
 										}]							
-								}/***,	
-								{
-	        						xtype: 'container',
-	        						layout: 'column',
-	        						anchor: '0',
-	        						items: [{
-	            						xtype: 'container',		         
-	            						columnWidth: 0.3,
-	            						items: [{
-	            							xtype: 'textfield',
-	            							fieldLabel: '任务',	
-	            							maxLength:11,
-	                						name: 'txt_phone'
-	            						}]
-	        						}]
-	    						}**/,{
+								},{
 	    					        xtype: 'radiogroup',	    					
 	    					        columns: 4,
 	    					        vertical: false,
@@ -970,7 +955,22 @@ var checkedStr='<img src="resources/images/icons/fam/accept.png"  border="0">';
 	    					        	loadData();	
 	    					        	
 	    					        }}
-	    					    }],
+	    					    },	
+								{
+	        						xtype: 'container',
+	        						layout: 'column',
+	        						anchor: '0',
+	        						items: [{
+	            						xtype: 'container',		         
+	            						columnWidth: 0.3,
+	            						items: [{
+	            							xtype: 'textfield',
+	            							fieldLabel: '手机号',	
+	            							maxLength:11,
+	                						name: 'txt_phone'
+	            						}]
+	        						}]
+	    						}],
         buttons: [{
             text: '检索',
             handler:function(){
@@ -996,7 +996,7 @@ var checkedStr='<img src="resources/images/icons/fam/accept.png"  border="0">';
 		
 	   	var form= searchForm.getForm();
 
-		var mtype=form.findField("rb").inputValue;
+		var txt_phone=form.findField("txt_phone").getValue();
 		
 		var temp= form.findField("txt_begin_date").value;
 		var begin_date=Ext.Date.format(temp,'Ymd');
@@ -1014,6 +1014,7 @@ var checkedStr='<img src="resources/images/icons/fam/accept.png"  border="0">';
 		gridstore.on('beforeload', function (store, options) {
 	      	        
 	    var extraParams={
+	    		phone:txt_phone,
 		        mtype:me.curRb,    
 		        TestBeginTime: begin_date+begin_time,		        
 		        TestEndTime:end_date+end_time
@@ -1094,6 +1095,7 @@ Ext.define('PT.view.report.TestAGridPanel', {
 					}        					
 					return v;
 				}},
+				{ text: '手机号 ', dataIndex: 'phone' },
 		        { text: '测试结果 ',  dataIndex: 'key1',renderer:testResult },
 		        { text: '点位序号 ', dataIndex: 'key2' },
 		        { text: 'LAC-CI', dataIndex: 'key3', flex: 1 },
@@ -1157,6 +1159,7 @@ Ext.define('PT.view.report.TestBGridPanel', {
 					}        					
 					return v;
 				}},
+				{ text: '手机号 ', dataIndex: 'phone' },
 		        { text: '业务拨测种类代码 ',  dataIndex: 'key1' },
 		        { text: '测试结果  ', dataIndex: 'key2' ,renderer:testResult},
 		        { text: '测试值', dataIndex: 'key3', flex: 1 }		        
@@ -1204,6 +1207,7 @@ Ext.define('PT.view.report.TestCGridPanel', {
 					}        					
 					return v;
 				}},
+				{ text: '手机号 ', dataIndex: 'phone' },
 		        { text: '测试结果 ',  dataIndex: 'key1' ,renderer:testResult},
 		        { text: '点位序号（室内） ', dataIndex: 'key2' },
 		        { text: 'LAC-CI（室内）', dataIndex: 'key3', flex: 1 },
@@ -1268,6 +1272,7 @@ Ext.define('PT.view.report.TestDGridPanel', {
 					}        					
 					return v;
 				}},
+				{ text: '手机号 ', dataIndex: 'phone' },
 		        { text: '测试结果 ',  dataIndex: 'key1' ,renderer:testResult},
 		        { text: '点位序号 ', dataIndex: 'key2' },
 		        { text: 'LAC-CI', dataIndex: 'key3', flex: 1 },
@@ -1326,16 +1331,15 @@ Ext.define('PT.view.sys.UsersPanel', {
     			}
 			});
 		
-		var loadData=function(){
+		var loadData=function(v){
 			
-			/***
 				gridstore.on('beforeload', function (store, options) {	      	        
 	        		var extraParams={
-	        				key:''		    
+	        				key:v		    
 		    		};	        
 	        		Ext.apply(store.proxy.extraParams, extraParams);	      
 	    		});
-	    **/
+	   
 	    	   gridstore.load();
 		};		
 		
@@ -1372,7 +1376,7 @@ Ext.define('PT.view.sys.UsersPanel', {
 									Ext.create('PT.view.window.EditUserWindow',{
 										rec:rec,
 										listeners:{'beforedestroy':function(){										
-											loadData();				
+											loadData('');				
 									}}}).show();
 			
 								}}
@@ -1390,7 +1394,7 @@ Ext.define('PT.view.sys.UsersPanel', {
 
 							Ext.create('PT.view.window.EditUserWindow',{								
 								listeners:{'beforedestroy':function(){										
-									loadData();													
+									loadData('');													
 								}}
 							}).show();
 														
@@ -1433,7 +1437,7 @@ Ext.define('PT.view.sys.UsersPanel', {
 													var m = Ext.JSON.decode(text);
 												
 													if(m.success){										
-														gridstore.load({params:{key:''}});
+														loadData('');
 													}else{
 														alert(m.msg);
 													}
@@ -1456,7 +1460,7 @@ Ext.define('PT.view.sys.UsersPanel', {
 								
 				            	var key=this.up('toolbar').child('textfield').getValue();
 				            	
-				               	gridstore.load({params:{key:key}});
+				            	loadData(key);
 				            }
 				        } ]}				        
 				    ]
@@ -1465,7 +1469,7 @@ Ext.define('PT.view.sys.UsersPanel', {
 		});
 				me.callParent(arguments);	
 				
-				gridstore.load();	
+				loadData('');	
 								
 			}					
 		});

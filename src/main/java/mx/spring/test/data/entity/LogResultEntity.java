@@ -21,6 +21,8 @@ public class LogResultEntity extends PagerInfo{
 	private String key10;
 	private Date createDt;
 
+	private String phone;
+	
 	public int getId() {
 		return id;
 	}
@@ -147,6 +149,14 @@ public class LogResultEntity extends PagerInfo{
 
 	public void setCreateDt(Date createDt) {
 		this.createDt = createDt;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 }

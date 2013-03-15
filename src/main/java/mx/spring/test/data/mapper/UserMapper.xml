@@ -9,7 +9,7 @@
 		FROM b_user
 		<where>
 			<if test=" value != null and value !=  ''  ">
-				userName = #{value}
+				userName  like concat( '%',#{value},'%')
 			</if>
 		</where>			
 	</select>
@@ -28,7 +28,7 @@
 	</update>
 	
 	<delete id="removeUser" parameterType="string">
-		delete from  b_user where WHERE  userName = #{userName} 
+		delete from  b_user  WHERE  userName = #{userName} 
 	</delete>
 	
 </mapper>

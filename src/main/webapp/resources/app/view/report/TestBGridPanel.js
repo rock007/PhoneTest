@@ -44,6 +44,7 @@ Ext.define('PT.view.report.TestBGridPanel', {
 					}        					
 					return v;
 				}},
+				{ text: '手机号 ', dataIndex: 'phone' },
 		        { text: '业务拨测种类代码 ',  dataIndex: 'key1' },
 		        { text: '测试结果  ', dataIndex: 'key2' ,renderer:testResult},
 		        { text: '测试值', dataIndex: 'key3', flex: 1 }		        

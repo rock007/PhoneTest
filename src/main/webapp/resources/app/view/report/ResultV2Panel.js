@@ -17,7 +17,7 @@
 		
 			var gridstore=	Ext.create('Ext.data.Store', {    	
     			fields:[
-    			        {name:'id',type:'int'}, 'fileName',  'beginDateTime', 'endDateTime',
+    			        {name:'id',type:'int'}, 'fileName',  'beginDateTime', 'endDateTime','phone',
     			        {name:'mtype',type:'int'},'key1','key2','key3','key4','key5','key6','key7','key8','key9','key10','createDt'
     			],    	
     			proxy: {
@@ -88,22 +88,7 @@
 											value:'23:59:59',
 											allowBlank: false
 										}]							
-								}/***,	
-								{
-	        						xtype: 'container',
-	        						layout: 'column',
-	        						anchor: '0',
-	        						items: [{
-	            						xtype: 'container',		         
-	            						columnWidth: 0.3,
-	            						items: [{
-	            							xtype: 'textfield',
-	            							fieldLabel: '任务',	
-	            							maxLength:11,
-	                						name: 'txt_phone'
-	            						}]
-	        						}]
-	    						}**/,{
+								},{
 	    					        xtype: 'radiogroup',	    					
 	    					        columns: 4,
 	    					        vertical: false,
@@ -122,7 +107,22 @@
 	    					        	loadData();	
 	    					        	
 	    					        }}
-	    					    }],
+	    					    },	
+								{
+	        						xtype: 'container',
+	        						layout: 'column',
+	        						anchor: '0',
+	        						items: [{
+	            						xtype: 'container',		         
+	            						columnWidth: 0.3,
+	            						items: [{
+	            							xtype: 'textfield',
+	            							fieldLabel: '手机号',	
+	            							maxLength:11,
+	                						name: 'txt_phone'
+	            						}]
+	        						}]
+	    						}],
         buttons: [{
             text: '检索',
             handler:function(){
@@ -148,7 +148,7 @@
 		
 	   	var form= searchForm.getForm();
 
-		var mtype=form.findField("rb").inputValue;
+		var txt_phone=form.findField("txt_phone").getValue();
 		
 		var temp= form.findField("txt_begin_date").value;
 		var begin_date=Ext.Date.format(temp,'Ymd');
@@ -166,6 +166,7 @@
 		gridstore.on('beforeload', function (store, options) {
 	      	        
 	    var extraParams={
+	    		phone:txt_phone,
 		        mtype:me.curRb,    
 		        TestBeginTime: begin_date+begin_time,		        
 		        TestEndTime:end_date+end_time

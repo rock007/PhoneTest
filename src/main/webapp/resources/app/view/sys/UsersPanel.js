@@ -27,16 +27,15 @@ Ext.define('PT.view.sys.UsersPanel', {
     			}
 			});
 		
-		var loadData=function(){
+		var loadData=function(v){
 			
-			/***
 				gridstore.on('beforeload', function (store, options) {	      	        
 	        		var extraParams={
-	        				key:''		    
+	        				key:v		    
 		    		};	        
 	        		Ext.apply(store.proxy.extraParams, extraParams);	      
 	    		});
-	    **/
+	   
 	    	   gridstore.load();
 		};		
 		
@@ -73,7 +72,7 @@ Ext.define('PT.view.sys.UsersPanel', {
 									Ext.create('PT.view.window.EditUserWindow',{
 										rec:rec,
 										listeners:{'beforedestroy':function(){										
-											loadData();				
+											loadData('');				
 									}}}).show();
 			
 								}}
@@ -91,7 +90,7 @@ Ext.define('PT.view.sys.UsersPanel', {
 
 							Ext.create('PT.view.window.EditUserWindow',{								
 								listeners:{'beforedestroy':function(){										
-									loadData();													
+									loadData('');													
 								}}
 							}).show();
 														
@@ -134,7 +133,7 @@ Ext.define('PT.view.sys.UsersPanel', {
 													var m = Ext.JSON.decode(text);
 												
 													if(m.success){										
-														gridstore.load({params:{key:''}});
+														loadData('');
 													}else{
 														alert(m.msg);
 													}
@@ -157,7 +156,7 @@ Ext.define('PT.view.sys.UsersPanel', {
 								
 				            	var key=this.up('toolbar').child('textfield').getValue();
 				            	
-				               	gridstore.load({params:{key:key}});
+				            	loadData(key);
 				            }
 				        } ]}				        
 				    ]
@@ -166,7 +165,7 @@ Ext.define('PT.view.sys.UsersPanel', {
 		});
 				me.callParent(arguments);	
 				
-				gridstore.load();	
+				loadData('');	
 								
 			}					
 		});

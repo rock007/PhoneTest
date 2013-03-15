@@ -14,15 +14,15 @@
     
     
 	<script type="text/javascript" src="<c:url value= "resources/ext4/locale/ext-lang-zh_CN.js" />" ></script>
-  <!--
+  
 	<script type="text/javascript" src="resources/app.js"  ></script>
--->     
+  <!--   
     <script type="text/javascript" src="resources/app-all.min.js"  ></script>
-
+-->
    
     <script type="text/javascript" >
 
-    	Ext.Loader.setConfig({enabled: false});
+    	Ext.Loader.setConfig({enabled: true});
     	
     	Ext.onReady(function() {
     	       		

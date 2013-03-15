@@ -29,6 +29,7 @@ Ext.define('PT.view.report.TestCGridPanel', {
 					}        					
 					return v;
 				}},
+				{ text: '手机号 ', dataIndex: 'phone' },
 		        { text: '测试结果 ',  dataIndex: 'key1' ,renderer:testResult},
 		        { text: '点位序号（室内） ', dataIndex: 'key2' },
 		        { text: 'LAC-CI（室内）', dataIndex: 'key3', flex: 1 },

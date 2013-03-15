@@ -30,6 +30,7 @@ Ext.define('PT.view.report.TestDGridPanel', {
 					}        					
 					return v;
 				}},
+				{ text: '手机号 ', dataIndex: 'phone' },
 		        { text: '测试结果 ',  dataIndex: 'key1' ,renderer:testResult},
 		        { text: '点位序号 ', dataIndex: 'key2' },
 		        { text: 'LAC-CI', dataIndex: 'key3', flex: 1 },

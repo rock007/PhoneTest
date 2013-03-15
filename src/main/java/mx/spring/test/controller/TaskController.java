@@ -159,6 +159,10 @@ public class TaskController {
 	JsonMsg updateMobile(@ModelAttribute MobileEntity m) {
 
 		JsonMsg msg = new JsonMsg();
+		
+		taskProvider.updateMobile(m);
+		 msg = new JsonMsg(true, "更新巡检人员信息成功！");
+		/**
 		List<MobileEntity> list=taskProvider.getMobileList(m);
 		
 		if (list!= null&&list.size()>0) {
@@ -168,7 +172,7 @@ public class TaskController {
 			taskProvider.addMobile(m);
 
 			msg = new JsonMsg(true, "添加巡检人员信息成功！");
-		}
+		}**/
 		return msg;
 	}
 
