@@ -77,7 +77,7 @@ public class ReportController {
 		m.setStart(0);
 		int rowNum = reportProvider.getResultV2ListNum(m);
 
-		String fileName = "result"+App.GetCurDT()+".csv";
+		String fileName = "report"+App.GetCurDT()+".csv";
 		BufferedWriter writer = null;
 
 		try {
@@ -86,10 +86,10 @@ public class ReportController {
 			
 			rowStr="开始时间,"+m.getBeginDateTime()+",结束时间,"+m.getEndDateTime();
 		
-			writer.write(0xEF);
-			writer.write(0xBB);
-			writer.write(0xBF);
-			
+			//writer.write(0xEF);
+			//writer.write(0xBB);
+			//writer.write(0xBF);
+			writer.write('\ufeff');
 			writer.write(rowStr);
 			writer.newLine();
 			
@@ -111,6 +111,7 @@ public class ReportController {
 					rowStr+=entity.getBeginDateTime()+",";
 					rowStr+=entity.getEndDateTime()+",";
 					
+					rowStr+=entity.getPhone()+",";
 					if (mtype.equals("A")) {
 						
 						rowStr+=entity.getKey1()+",";

@@ -986,6 +986,36 @@ var checkedStr='<img src="resources/images/icons/fam/accept.png"  border="0">';
         		form.reset();       		
         		loadData();
         	}
+        },{
+        	text:'导出',
+        	handler:function(){        		
+            		
+        		var form =this.up('form').getForm();
+        		
+        		var txt_phone=form.findField("txt_phone").getValue();
+        		
+        		var temp= form.findField("txt_begin_date").value;
+        		var begin_date=Ext.Date.format(temp,'Ymd');
+        		
+        		temp=form.findField("txt_begin_time").getValue();
+        		var begin_time=Ext.Date.format(temp,'His');
+        		
+        		temp=form.findField("txt_end_date").getValue();
+        		
+        		var end_date=Ext.Date.format(temp,'Ymd');
+        		
+        		temp=form.findField("txt_end_time").getValue();
+        		var end_time=Ext.Date.format(temp,'His');
+        		        		
+        		Ext.create('Ext.window.Window', {
+        		    title: '下载文件',
+        		    height: 250,
+        		    width: 400,
+        		    layout: 'fit',
+        		    html:'<br> <a target="_blank" href="export?phone='+txt_phone+'&mtype='+me.curRb+'&beginDateTime='+begin_date+begin_time+'&endDateTime='+end_date+end_time+'" >点击文件下载</a>' 
+        		    
+        		}).show();
+            }	
         }]
     }]			
 		});			
@@ -1016,8 +1046,8 @@ var checkedStr='<img src="resources/images/icons/fam/accept.png"  border="0">';
 	    var extraParams={
 	    		phone:txt_phone,
 		        mtype:me.curRb,    
-		        TestBeginTime: begin_date+begin_time,		        
-		        TestEndTime:end_date+end_time
+		        beginDateTime: begin_date+begin_time,		        
+		        endDateTime:end_date+end_time
 		    };
 	        
 	        Ext.apply(store.proxy.extraParams, extraParams);
