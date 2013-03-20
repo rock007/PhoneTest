@@ -131,7 +131,8 @@ Ext.define('PT.view.task.BuildingPanel', {
 		        			return v;
         				}},        				
         				{
-							xtype : 'actioncolumn',				
+							xtype : 'actioncolumn',	
+							header:'楼宇及点位编辑',
 							flex : 1,
 							items : [ {
 								icon: 'resources/images/icons/fam/edit.gif',

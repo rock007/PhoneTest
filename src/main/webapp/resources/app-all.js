@@ -1782,7 +1782,8 @@ Ext.define('PT.view.task.BuildingPanel', {
 		        			return v;
         				}},        				
         				{
-							xtype : 'actioncolumn',				
+							xtype : 'actioncolumn',	
+							header:'楼宇及点位编辑',
 							flex : 1,
 							items : [ {
 								icon: 'resources/images/icons/fam/edit.gif',
@@ -2762,6 +2763,8 @@ Ext.define('PT.view.task.TestUserPanel', {
 					{
         				fieldLabel: '手机号码',
         				name: 'mobileId',
+        				maxLength :11,
+        				minLength :11,	
         				anchor:'70%',
         				allowBlank: false
     				},{

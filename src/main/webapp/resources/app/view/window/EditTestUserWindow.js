@@ -25,6 +25,8 @@
 					{
         				fieldLabel: '手机号码',
         				name: 'mobileId',
+        				maxLength :11,
+        				minLength :11,	
         				anchor:'70%',
         				allowBlank: false
     				},{

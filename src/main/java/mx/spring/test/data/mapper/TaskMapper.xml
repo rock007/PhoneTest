@@ -94,7 +94,7 @@
 			( #{mobileId},#{ecode},#{ename},#{status} )
 	</insert>
 	<update id="updateMobile"  parameterType="MobileEntity" >
-	`	update mobilephone
+		update mobilephone
 			set ecode=#{ecode},ename=#{ename},status=#{status}
 		where mobileId=#{mobileId}
 	</update>
