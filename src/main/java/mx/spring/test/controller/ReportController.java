@@ -108,13 +108,13 @@ public class ReportController {
 				for (LogResultEntity entity : list) {
 					rowStr="";
 
-					rowStr+=entity.getBeginDateTime()+",";
-					rowStr+=entity.getEndDateTime()+",";
+					//rowStr+=entity.getBeginDateTime()+",";
+					//rowStr+=entity.getEndDateTime()+",";
 					
-					rowStr+=entity.getPhone()+",";
+					//rowStr+=entity.getPhone()+",";
 					if (mtype.equals("A")) {
 						
-						rowStr+=entity.getKey1()+",";
+						//rowStr+=entity.getKey1()+",";
 						rowStr+=entity.getKey2()+",";
 						rowStr+=entity.getKey3()+",";					
 						rowStr+=entity.getKey4()+"";
@@ -185,16 +185,28 @@ public class ReportController {
 		try {
 			if (mtype.equals("A")) {
 
-				writer.write("起始时间,结束时间,手机号,测试结果,点位序号,LAC-CI,RxLvl均值");
-
+				//writer.write("起始时间,结束时间,手机号,测试结果,点位序号,LAC-CI,RxLvl均值");
+				writer.write("点位序号	, LAC-CI/BCCH,	Level(dBm),	CQT质量等级");
+				
 			} else if (mtype.equals("B")) {
 
-				writer.write("起始时间,结束时间,手机号,业务拨测种类代码,测试结果,测试值");
+				//writer.write("起始时间,结束时间,手机号,业务拨测种类代码,测试结果,测试值");
+				
+				writer.write("点位序号,	指标	,测试结果,测试值");
 				
 			} else if (mtype.equals("C")) {
-				writer.write("起始时间,结束时间,手机号,测试结果,点位序号（室内）,LAC-CI（室内）,RxLvl均值（室内）,点位序号（室外）,LAC-CI（室外）,RxLvl均值（室外）,CQT质量等级,呼叫结果");
+				//writer.write("起始时间,结束时间,手机号,测试结果,点位序号（室内）,LAC-CI（室内）,RxLvl均值（室内）,点位序号（室外）,LAC-CI（室外）,RxLvl均值（室外）,CQT质量等级,呼叫结果");
+				writer.write("测试地点,室内/小区内信号,,室外/小区外信号,,接通状态,,,,,,,未接通,,,,");
+				writer.newLine();
+				writer.write(",（dBm）,LAC-CI/BCCH,（dBm）,LAC-CI/BCCH,正常,噪音,串话,回音,无话音,单通,掉话,信道忙,无信号,无声音中断,拨通后立即中断,");
+				
 			} else if (mtype.equals("D")) {
-				writer.write("起始时间,结束时间,手机号,测试结果,点位序号,LAC-CI,RxLvl均值,CQT质量等级,呼叫结果");
+				//writer.write("起始时间,结束时间,手机号,测试结果,点位序号,LAC-CI,RxLvl均值,CQT质量等级,呼叫结果");
+				
+				writer.write("点位序号,LAC-CI/BCCH,Level,CQT,接通状态,,,,,,,未接通,,,");
+				writer.newLine();
+				writer.write(",,(dBm),质量等级,正常,噪音,串话,回音,无话音,单通,掉话,信道忙,无信号,无声音中断,拨通后立即中断,");
+				
 			} else {
 
 			}
